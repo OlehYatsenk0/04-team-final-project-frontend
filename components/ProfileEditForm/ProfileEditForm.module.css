@@ -25,6 +25,11 @@
   transition: border 0.2s ease-in-out;
 }
 
+.input::placeholder {
+  font-size: 14px;
+  font-weight: 400;
+}
+
 .input:focus {
   border: 2px solid var(--color-pastel-pink);
 }
@@ -47,7 +52,7 @@
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   user-select: none;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
   color: var(--color-neutral);
 }
@@ -77,7 +82,7 @@
 
 .optionsList {
   position: absolute;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
   top: 100%;
   left: 0;
