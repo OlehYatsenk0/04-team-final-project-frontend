@@ -95,7 +95,7 @@ export default function ProfileEditForm() {
               placeholder="Ганна"
               className={css.input}
             />
-            <ErrorMessage name="name" component="div" />
+            <ErrorMessage name="name" component="div" className={css.error}/>
           </div>
 
           <div className={css.field}>
@@ -109,7 +109,7 @@ export default function ProfileEditForm() {
               placeholder="example@example.com"
               className={css.input}
             />
-            <ErrorMessage name="email" component="div" />
+            <ErrorMessage name="email" component="div" className={css.error}/>
           </div>
 
           <div className={css.field}>
@@ -127,7 +127,7 @@ export default function ProfileEditForm() {
               <option value="male">Хлопчик</option>
               <option value="female">Дівчинка</option>
             </Field>
-            <ErrorMessage name="childGender" component="div" />
+            <ErrorMessage name="childGender" component="div" className={css.error}/>
           </div>
 
           <div className={css.field}>
@@ -140,13 +140,13 @@ export default function ProfileEditForm() {
               name="expectedBirthDate"
               className={css.input}
             />
-            <ErrorMessage name="expectedBirthDate" component="div" />
+            <ErrorMessage name="expectedBirthDate" component="div" className={css.error}/>
           </div>
 
           <div className={css.buttons_container}>
             <button
               type="button"
-              className={css.button_cancel}
+              className={css.button}
               onClick={() => resetForm()}
             >
               Відмінити зміни
@@ -154,7 +154,7 @@ export default function ProfileEditForm() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className={css.button}
+              className={css.button + ' ' + css.button_save}
             >
               Зберегти зміни
             </button>
