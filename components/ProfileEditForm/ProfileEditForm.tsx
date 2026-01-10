@@ -2,7 +2,7 @@
 
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useAuthStore } from '@/lib/store/authStore';
 import { getCurrentUser, updateUser } from '@/lib/api/clientApi';
 import css from './ProfileEditForm.module.css';
@@ -29,6 +29,8 @@ interface FormValues {
 export default function ProfileEditForm() {
   const { user, setUser } = useAuthStore();
   const [isLoading, setIsLoading] = useState(true);
+  const [isSelectOpen, setIsSelectOpen] = useState(false);
+  const selectRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -48,6 +50,22 @@ export default function ProfileEditForm() {
       setIsLoading(false);
     }
   }, [user, setUser]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        selectRef.current &&
+        !selectRef.current.contains(event.target as Node)
+      ) {
+        setIsSelectOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const initialValues: FormValues = {
     name: user?.name || '',
@@ -82,7 +100,7 @@ export default function ProfileEditForm() {
       onSubmit={handleSubmit}
       enableReinitialize={true}
     >
-      {({ isSubmitting, resetForm }) => (
+      {({ isSubmitting, resetForm, values, setFieldValue }) => (
         <Form className={css.form}>
           <div className={css.field}>
             <label htmlFor="name" className={css.label}>
@@ -95,7 +113,7 @@ export default function ProfileEditForm() {
               placeholder="Ганна"
               className={css.input}
             />
-            <ErrorMessage name="name" component="div" className={css.error}/>
+            <ErrorMessage name="name" component="div" className={css.error} />
           </div>
 
           <div className={css.field}>
@@ -109,25 +127,67 @@ export default function ProfileEditForm() {
               placeholder="example@example.com"
               className={css.input}
             />
-            <ErrorMessage name="email" component="div" className={css.error}/>
+            <ErrorMessage name="email" component="div" className={css.error} />
           </div>
 
           <div className={css.field}>
             <label htmlFor="childGender" className={css.label}>
               Стать дитини
             </label>
-            <Field
-              as="select"
-              id="childGender"
+            <div className={css.selectWrapper} ref={selectRef}>
+              <div
+                className={`${css.select} ${isSelectOpen ? css.selectOpen : ''}`}
+                onClick={() => setIsSelectOpen(!isSelectOpen)}
+              >
+                <span className={css.selectValue}>
+                  {values.childGender === 'neutral' && 'Не визначено'}
+                  {values.childGender === 'male' && 'Хлопчик'}
+                  {values.childGender === 'female' && 'Дівчинка'}
+                  {!values.childGender && 'Оберіть стать'}
+                </span>
+                <span
+                  className={`${css.arrow} ${isSelectOpen ? css.arrowOpen : ''}`}
+                >
+                  ▼
+                </span>
+              </div>
+              {isSelectOpen && (
+                <div className={css.optionsList}>
+                  <div
+                    className={css.option}
+                    onClick={() => {
+                      setFieldValue('childGender', 'neutral');
+                      setIsSelectOpen(false);
+                    }}
+                  >
+                    Не визначено
+                  </div>
+                  <div
+                    className={css.option}
+                    onClick={() => {
+                      setFieldValue('childGender', 'male');
+                      setIsSelectOpen(false);
+                    }}
+                  >
+                    Хлопчик
+                  </div>
+                  <div
+                    className={`${css.option} ${css.optionLast}`}
+                    onClick={() => {
+                      setFieldValue('childGender', 'female');
+                      setIsSelectOpen(false);
+                    }}
+                  >
+                    Дівчинка
+                  </div>
+                </div>
+              )}
+            </div>
+            <ErrorMessage
               name="childGender"
-              className={css.input}
-              placeholder="Виберіть стать"
-            >
-              <option value="neutral">Не визначено</option>
-              <option value="male">Хлопчик</option>
-              <option value="female">Дівчинка</option>
-            </Field>
-            <ErrorMessage name="childGender" component="div" className={css.error}/>
+              component="div"
+              className={css.error}
+            />
           </div>
 
           <div className={css.field}>
@@ -140,7 +200,11 @@ export default function ProfileEditForm() {
               name="expectedBirthDate"
               className={css.input}
             />
-            <ErrorMessage name="expectedBirthDate" component="div" className={css.error}/>
+            <ErrorMessage
+              name="expectedBirthDate"
+              component="div"
+              className={css.error}
+            />
           </div>
 
           <div className={css.buttons_container}>

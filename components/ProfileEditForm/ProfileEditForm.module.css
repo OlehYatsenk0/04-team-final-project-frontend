@@ -18,10 +18,96 @@
 .input {
   background-color: var(--opacity-neutral-darkest-5);
   outline: none;
-  border: transparent;
+  border: 2px solid transparent;
+  height: 36px;
+  border-radius: 12px;
+  padding: 0 12px;
+  transition: border 0.2s ease-in-out;
+}
+
+.input:focus {
+  border: 2px solid var(--color-pastel-pink);
+}
+
+.selectWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.select {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--opacity-neutral-darkest-5);
+  outline: none;
+  border: 2px solid transparent;
   height: 40px;
   border-radius: 12px;
   padding: 0 12px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  user-select: none;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--color-neutral);
+}
+
+.select:hover {
+  border: 2px solid var(--opacity-neutral-darkest-15);
+}
+
+.selectOpen {
+  border-radius: 12px 12px 0 0;
+  border: 2px solid var(--opacity-neutral-darkest-15);
+}
+
+.selectValue {
+  color: var(--color-neutral-darkest);
+}
+
+.arrow {
+  font-size: 10px;
+  transition: transform 0.2s ease-in-out;
+  color: var(--color-neutral);
+}
+
+.arrowOpen {
+  transform: rotate(180deg);
+}
+
+.optionsList {
+  position: absolute;
+  font-size: 16px;
+  font-weight: 400;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: var(--color-neutral-lightest);
+  border: 2px solid var(--opacity-neutral-darkest-15);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  z-index: 10;
+  overflow: hidden;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease-in-out,
+    border-radius 0.2s ease-in-out;
+  color: var(--color-neutral-darkest);
+}
+
+.option:hover {
+  background-color: var(--opacity-neutral-darkest-15);
+  border-radius: 8px;
+}
+
+.optionLast {
+  border-radius: 0 0 12px 12px;
 }
 
 .input::placeholder {
@@ -57,8 +143,8 @@
   font-family: inherit;
   cursor: pointer;
   transition:
-    background-color 0.3s ease-in-out,
-    border-bottom 0.3s ease-in-out;
+    background-color 0.2s ease-in-out,
+    border-bottom 0.2s ease-in-out;
 }
 
 .button:hover {
