@@ -64,10 +64,10 @@ export default function SignIn() {
     <main className={css.mainContent}>
       <Link className={css.logo} href="/">
         <svg className="logo-icon" width="30" height="30">
-          <use href="/img/sprite.svg#icon-logo"></use>
+          <use href="/img/logo/sprite.svg#icon-logo"></use>
         </svg>
         <svg className="stork-icon" width="61" height="13">
-          <use href="/img/sprite.svg#icon-stork"></use>
+          <use href="/img/logo/sprite.svg#icon-stork"></use>
         </svg>
       </Link>
       <div className={css.content}>
