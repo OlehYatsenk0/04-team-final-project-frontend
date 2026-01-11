@@ -58,3 +58,8 @@
   --font-family: "Lato", sans-serif;
   --second-family: "Comfortaa", sans-serif;
 }
+
+body {
+
+	margin: 0;
+}
