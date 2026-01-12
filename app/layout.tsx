@@ -19,8 +19,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${lato.className} ${comfortaa.className}`}>
         <TanStackProvider>
-          <Header />
+
+
           <Sprite />
+
           {children}
         </TanStackProvider>
       </body>
