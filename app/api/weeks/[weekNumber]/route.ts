@@ -2,16 +2,19 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { isAxiosError } from 'axios';
 import { api } from '../../api';
+import { logErrorResponse } from '../../_utils/utils';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { weekNumber: string } },
+  context: { params: Promise<{ weekNumber: string }> },
 ) {
   try {
-    const weekNumber = Number(params.weekNumber);
+    const { weekNumber } = await context.params;
+
     const cookieStore = await cookies();
 
-    const res = await api.get(`/weeks/${weekNumber}`, {
+    const res = await api.get('/api/weeks', {
+      params: { week: Number(weekNumber) },
       headers: {
         Cookie: cookieStore.toString(),
       },
@@ -20,13 +23,19 @@ export async function GET(
     return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
     if (isAxiosError(error)) {
+      logErrorResponse(error.response?.data);
       return NextResponse.json(
-        { error: error.message, response: error.response?.data },
+        {
+          message: error.message,
+          backend: error.response?.data,
+        },
         { status: error.response?.status ?? 500 },
       );
     }
+
+    logErrorResponse({ message: (error as Error).message });
     return NextResponse.json(
-      { error: 'Internal Server Error' },
+      { message: 'Internal Server Error' },
       { status: 500 },
     );
   }

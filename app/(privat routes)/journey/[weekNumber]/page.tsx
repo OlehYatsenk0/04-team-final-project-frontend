@@ -5,7 +5,6 @@ import {
 } from '@tanstack/react-query';
 
 import { fetchWeekServer } from '@/lib/api/serverApi';
-import axios from 'axios';
 import JourneyPageClient from './JourneyClient.client';
 
 type Props = {
@@ -13,15 +12,6 @@ type Props = {
 };
 
 async function JourneyPage({ params }: Props) {
-  // await axios.post(
-  //   'https://zero4-team-final-project-backend.onrender.com/api/auth/login',
-  //   {
-  //     email: 'testmax@mail.com',
-  //     password: '12345678',
-  //   },
-  //   { withCredentials: true },
-  // );
-
   const resolvedParams = await params;
   const weekNumber = Number(resolvedParams.weekNumber);
 
