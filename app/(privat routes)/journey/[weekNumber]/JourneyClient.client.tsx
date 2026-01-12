@@ -1,10 +1,10 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { fetchDataByWeekNumber } from '@/lib/api/serverApi';
 import { PregnancyWeek } from '@/types/week';
 import WeekSelector from '@/components/WeekSelector/WeekSelector';
 import css from './JourneyClient.module.css';
+import { fetchWeekClient } from '@/lib/api/clientApi';
 
 interface Props {
   weekNumber: number;
@@ -13,7 +13,7 @@ interface Props {
 function JourneyPageClient({ weekNumber }: Props) {
   const { data, isLoading } = useQuery<PregnancyWeek>({
     queryKey: ['week', weekNumber],
-    queryFn: () => fetchDataByWeekNumber(weekNumber),
+    queryFn: () => fetchWeekClient(weekNumber),
   });
 
   if (isLoading) return <p>Loading...</p>;
