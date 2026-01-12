@@ -93,7 +93,7 @@ export default function Header() {
               className={styles.menu_mobile}
               aria-label="menu button"
             >
-              <svg width="22" height="16">
+              <svg width="32" height="32">
                 <use href="#icon-menu"></use>
               </svg>
             </button>

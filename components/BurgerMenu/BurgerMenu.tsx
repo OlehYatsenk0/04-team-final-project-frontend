@@ -48,7 +48,7 @@ export default function BurgerMenu({ onClose }: BurgerMenuProps) {
             className={styles.menu_mobile}
             aria-label="menu button"
           >
-            <svg width="18" height="18">
+            <svg width="32" height="32">
               <use href="#icon-close"></use>
             </svg>
           </button>
