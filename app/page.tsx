@@ -1,11 +1,30 @@
-import styles from "./page.module.css";
+import styles from './DashboardPage.module.css';
 import { lato } from './fonts';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query';
+import { fetchWeek } from '@/lib/api/api';
+import DashboardPageClient from './DashboardPage.client';
 
-export default function Home() {
+async function DashboardPage() {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ['week'],
+    queryFn: fetchWeek,
+  });
+
   return (
     <main className={styles.main}>
-      
-        <h1 className={lato.className}>Welcome to My Next.js App!</h1>
+      <div className={styles.container}>
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <DashboardPageClient />
+        </HydrationBoundary>
+      </div>
     </main>
   );
 }
+
+export default DashboardPage;
