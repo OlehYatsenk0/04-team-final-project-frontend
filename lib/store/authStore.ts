@@ -1,6 +1,6 @@
 import { User } from '@/types/user';
 import { create } from 'zustand';
-import { registerUser } from '@/app/(auth routes)/sign-up/auth';
+import { api } from '@/lib/api/api';
 import axios from 'axios';
 // import { error } from 'node:console';
 
@@ -27,8 +27,7 @@ export const useAuthStore = create<AuthStore>()((set) => ({
 
   register: async (data) => {
     try {
-      const response = await registerUser(data);
-      //предполагаю, что БЭК возвращает user
+      const response = await api.post<{ user: User }>('auth/register', data);
       set({
         user: response.data.user,
         isAuthenticated: true,

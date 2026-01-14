@@ -41,17 +41,16 @@ const SignUpFormSchema = Yup.object().shape({
 
 // Component
 export default function SignUpForm() {
-  const register = useAuthStore((state) => state.register);
   const router = useRouter();
-
+  const register = useAuthStore((state) => state.register);
   const handleSubmit = async (
     values: SignUpFormValues,
     actions: FormikHelpers<SignUpFormValues>,
   ) => {
     try {
-      toast.info('Регистрация...');
+      toast.info('Реєстрація...');
       await register(values);
-      toast.info('регистрация успешна!');
+      toast.info('Реєстрація успішна!');
       actions.resetForm();
       router.push('/profile/edit');
     } catch (error: unknown) {

@@ -1,6 +1,6 @@
 import { PregnancyWeek } from '@/types/week';
 import { api } from './api';
-import { LoginData, User } from '@/types/user';
+import { LoginData, RegistrationData, User } from '@/types/user';
 
 export async function fetchWeekClient(
   weekNumber: number,
@@ -13,5 +13,10 @@ export async function fetchWeekClient(
 
 export const login = async (loginData: LoginData) => {
   const { data } = await api.post<User>(`/auth/login`, loginData);
+  return data;
+};
+
+export const register = async (registrationData: RegistrationData) => {
+  const { data } = await api.post<User>('/auth/register', registrationData);
   return data;
 };
