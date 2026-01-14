@@ -21,12 +21,18 @@ const validationSchema = Yup.object({
     .required("Пароль обов'язковий"),
 });
 
+type SignUpFormValues = {
+  name: string;
+  email: string;
+  password: string;
+};
+
 export default function SignUpForm() {
   const register = useAuthStore((state) => state.register);
   const router = useRouter();
 
   // Initial values formik + onSubmit
-  const formik = useFormik({
+  const formik = useFormik<SignUpFormValues>({
     initialValues: {
       name: '',
       email: '',
@@ -37,8 +43,12 @@ export default function SignUpForm() {
       try {
         await register(values);
         router.push('/profile/edit'); // вот тут будет редайрект на онбоардинг
-      } catch (error: any) {
-        toast.error(error.message);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          toast.error(error.message);
+        } else {
+          toast.error('Невідома помилка');
+        }
       }
     },
   });
