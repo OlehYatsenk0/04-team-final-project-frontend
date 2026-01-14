@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { useEffect, useState, useRef } from 'react';
 import { useAuthStore } from '@/lib/store/authStore';
 import { getCurrentUser, updateUser } from '@/lib/api/clientApi';
+import { User } from '@/types/user';
 import css from './ProfileEditForm.module.css';
 
 const validationSchema = Yup.object({
@@ -75,13 +76,20 @@ export default function ProfileEditForm() {
   };
 
   const handleSubmit = async (values: FormValues) => {
+    if (!user) return;
+
+    const updates: Partial<User> = {};
+    if (values.name !== user.name) updates.name = values.name;
+    if (values.email !== user.email) updates.email = values.email;
+    if (values.childGender !== user.gender) updates.gender = values.childGender;
+    if (values.dueDate !== user.dueDate) updates.dueDate = values.dueDate;
+
+    if (Object.keys(updates).length === 0) {
+      return;
+    }
+
     try {
-      const updatedUser = await updateUser({
-        name: values.name,
-        email: values.email,
-        gender: values.childGender,
-        dueDate: values.dueDate,
-      });
+      const updatedUser = await updateUser(updates);
       setUser(updatedUser);
       console.log('User updated successfully:', updatedUser);
     } catch (error) {

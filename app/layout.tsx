@@ -17,10 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${lato.className} ${comfortaa.className}`}>
+      <body
+        className={`${lato.className} ${comfortaa.className}`}
+        suppressHydrationWarning={true}
+      >
         <TanStackProvider>
-
-
           <Sprite />
 
           {children}
