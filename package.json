@@ -14,14 +14,9 @@
     "clsx": "^2.1.1",
     "cookie": "^1.1.1",
     "formik": "^2.4.9",
-<<<<<<< HEAD
-    "framer-motion": "^12.25.0",
-    "izitoast": "^1.4.0",
-=======
     "modern-normalize": "^3.0.1",
     "izitoast": "^1.4.0",
     "framer-motion": "^12.25.0",
->>>>>>> main
     "next": "16.1.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
