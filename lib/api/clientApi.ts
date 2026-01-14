@@ -1,5 +1,7 @@
+import { PregnancyWeek } from '@/types/week';
+
 import { api } from './api';
-import { User } from '@/types/user';
+import { User ,LoginData } from '@/types/user';
 
 interface ApiResponse<T> {
   status: number;
@@ -34,4 +36,19 @@ export const uploadAvatar = async (file: File): Promise<User> => {
     },
   );
   return response.data.data;
-};
+}
+
+  export async function fetchWeekClient(
+    weekNumber: number,
+  ): Promise<PregnancyWeek> {
+    const { data } = await api.get(`/weeks/${weekNumber}`, {
+      withCredentials: true,
+    });
+    return data;
+  }
+
+  export const login = async (loginData: LoginData) => {
+    const { data } = await api.post<User>(`/auth/login`, loginData);
+    return data;
+
+  };
