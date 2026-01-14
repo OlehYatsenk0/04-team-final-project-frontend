@@ -1,8 +1,9 @@
+import OnboardingForm from '@/components/OnboardingForm/OnboardingForm';
+
 export default function OnboardingPage() {
   return (
-    <main style={{ padding: 24 }}>
-      <h1>Onboarding</h1>
-      <p>Onboarding page is under construction</p>
+    <main style={{ minHeight: '100vh', backgroundColor: 'var(--color-white)' }}>
+      <OnboardingForm />
     </main>
   );
 }
