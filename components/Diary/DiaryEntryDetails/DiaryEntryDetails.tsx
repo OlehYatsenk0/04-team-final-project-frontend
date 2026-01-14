@@ -1,5 +1,5 @@
 'use client';
-import cn from 'classnames';
+import clsx from 'clsx';
 import css from './DiaryEntryDetails.module.css';
 import { Diary } from '@/types/diary';
 
@@ -10,10 +10,10 @@ interface DiaryEntryDetailsProps {
 
 export default function DiaryEntryDetails({ diary, className = '' }: DiaryEntryDetailsProps) {
     return (
-        <div className={cn(css.container, className)}>
+        <div className={clsx(css.container, className)}>
             <div className={css.header}>
                 <div className={css.title}>
-                    <h2 className={css.titleText}>Перший привіт</h2>
+                    <h2 className={css.titleText}>{diary.title}</h2>
                     <button className={css.editButton}>
                         <svg className={css.editSvgIcon} width="21" height="21">
                             <use href="/img/sprite.svg#icon-edit"></use>

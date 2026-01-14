@@ -7,16 +7,18 @@ import { useRouter } from 'next/navigation';
 
 interface DiaryListProps {
     diaries: Diary[];
+    setSelectedDiaryIndex: (index: number) => void;
 }
 
-export default function DiaryList({ diaries }: DiaryListProps) {
+export default function DiaryList({ diaries, setSelectedDiaryIndex }: DiaryListProps) {
     const router = useRouter();
 
-    const handleNewEntryClick = (id: string) => {
+    const handleNewEntryClick = (diary: Diary, index: number) => {
         const width = window.innerWidth;
         if (width < 1440) {
-            return router.push(`/diary/${id}`);
+            return router.push(`/diary/${diary._id}`);
         }
+        setSelectedDiaryIndex(index);
     };
 
     return (
@@ -30,8 +32,8 @@ export default function DiaryList({ diaries }: DiaryListProps) {
                 </button>
             </div>
             {!!diaries.length && <ul className={css.listContent}>
-                {diaries.map((diary: Diary) => (
-                    <DiaryEntryCard key={diary._id} diary={diary} onClick={handleNewEntryClick} />
+                {diaries.map((diary: Diary, index: number) => (
+                    <DiaryEntryCard key={diary._id} diary={diary} onClick={() => handleNewEntryClick(diary, index)} />
                 ))}
             </ul>}
         </div>
