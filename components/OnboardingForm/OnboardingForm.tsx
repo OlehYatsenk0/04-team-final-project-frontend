@@ -143,38 +143,41 @@ export default function OnboardingForm() {
               <ErrorMessage name="avatar" component="div" className={styles.error} />
             </div>
 
-            {/* Поле статі дитини */}
-            <div className={styles.field}>
-              <label htmlFor="gender" className={styles.label}>
-                Стать дитини
-              </label>
-              <Field
-                id="gender"
-                name="gender"
-                as="select"
-                className={styles.select}
-              >
-                {genderOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </Field>
-              <ErrorMessage name="gender" component="div" className={styles.error} />
-            </div>
+            {/* Поля форми */}
+            <div className={styles.fields}>
+              {/* Поле статі дитини */}
+              <div className={styles.field}>
+                <label htmlFor="gender" className={styles.label}>
+                  Стать дитини
+                </label>
+                <Field
+                  id="gender"
+                  name="gender"
+                  as="select"
+                  className={styles.select}
+                >
+                  {genderOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </Field>
+                <ErrorMessage name="gender" component="div" className={styles.error} />
+              </div>
 
-            {/* Поле дати */}
-            <div className={styles.field}>
-              <label htmlFor="dueDate" className={styles.label}>
-                Планова дата пологів
-              </label>
-              <Field
-                id="dueDate"
-                name="dueDate"
-                type="date"
-                className={styles.input}
-              />
-              <ErrorMessage name="dueDate" component="div" className={styles.error} />
+              {/* Поле дати */}
+              <div className={styles.field}>
+                <label htmlFor="dueDate" className={styles.label}>
+                  Планова дата пологів
+                </label>
+                <Field
+                  id="dueDate"
+                  name="dueDate"
+                  type="date"
+                  className={styles.input}
+                />
+                <ErrorMessage name="dueDate" component="div" className={styles.error} />
+              </div>
             </div>
 
             {/* Кнопка збереження */}
