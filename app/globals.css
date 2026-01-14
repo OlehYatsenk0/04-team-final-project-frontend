@@ -84,7 +84,8 @@ a {
   text-decoration: none;
 }
 
-body {
-  font-family: 'Montserrat', sans-serif;
-  background-color: var(--primary-bg);
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }

@@ -16,9 +16,9 @@ export default function JourneyDetails({ data }: { data: PregnancyWeek }) {
 
   return (
     <>
-      {/* <section className={css.journeyDetails}> */}
+      {/* <section className={css.container}> */}
       <section>
-        <div className={css.journeyContainer}>
+        <div className={clsx(css.journeyContainer, css.container)}>
           <div className={css.tabContainer}>
             <button
               className={clsx(css.tabButton, selectedTab === 0 && css.active)}
@@ -44,8 +44,8 @@ export default function JourneyDetails({ data }: { data: PregnancyWeek }) {
                     src={data.baby.image}
                     alt="Baby Size Association Image"
                     className={css.babyImage}
-                    width={300}
-                    height={300}
+                    width={461}
+                    height={379}
                   />
                 </div>
                 {data.baby.analogy && (
