@@ -46,9 +46,12 @@ export const completeOnboarding = async (formData: OnboardingFormValues): Promis
     avatarUrl = await uploadAvatar(formData.avatar);
   }
 
+  // Конвертуємо 'unknown' в null для API (згідно з вимогами: boy, girl, null)
+  const genderForApi = formData.gender === 'unknown' ? null : formData.gender;
+
   const user = await updateOnboarding({
     dueDate: formData.dueDate,
-    gender: formData.gender,
+    gender: genderForApi || 'unknown', // Якщо null, відправляємо 'unknown' для теми
     avatar: avatarUrl,
   });
 

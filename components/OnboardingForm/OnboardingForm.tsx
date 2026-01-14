@@ -23,16 +23,24 @@ const validationSchema = Yup.object().shape({
     }),
   dueDate: Yup.string()
     .required('Дата вагітності обов\'язкова')
-    .test('validDate', 'Дата має бути в майбутньому', (value) => {
+    .matches(/^\d{4}-\d{2}-\d{2}$/, 'Дата має бути у форматі YYYY-MM-DD')
+    .test('validDate', 'Дата має бути від 1 тижня до 40 тижнів від сьогодні', (value) => {
       if (!value) return false;
       const date = new Date(value);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      return date >= today;
+      
+      const minDate = new Date(today);
+      minDate.setDate(today.getDate() + 7); // +1 week
+      
+      const maxDate = new Date(today);
+      maxDate.setDate(today.getDate() + 7 * 40); // +40 weeks
+      
+      return date >= minDate && date <= maxDate;
     }),
   gender: Yup.string()
-    .oneOf(['boy', 'girl', 'unknown'], 'Оберіть стать дитини')
-    .required('Стать дитини обов\'язкова'),
+    .oneOf(['boy', 'girl', 'unknown', null], 'Оберіть стать дитини')
+    .nullable(),
 });
 
 const initialValues: OnboardingFormValues = {
@@ -45,7 +53,7 @@ const genderOptions = [
   { value: '', label: 'Оберіть стать' },
   { value: 'boy', label: 'Хлопчик' },
   { value: 'girl', label: 'Дівчинка' },
-  { value: 'unknown', label: 'Ще не знаю' },
+  { value: 'unknown', label: 'Ще не знаю' }, // 'unknown' для UI, конвертується в null для API
 ];
 
 export default function OnboardingForm() {
