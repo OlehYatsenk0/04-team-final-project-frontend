@@ -20,19 +20,23 @@ export const uploadAvatar = async (avatarFile: File): Promise<string> => {
 
 export const updateOnboarding = async (data: {
   dueDate: string;
-  gender: string;
+  gender: string | null;
   avatar?: string;
 }): Promise<User> => {
   const themeMap: Record<string, string> = {
     girl: 'pink',
     boy: 'blue',
     unknown: 'neutral',
+    null: 'neutral',
   };
+
+  // Конвертуємо 'unknown' в null для API (згідно з вимогами: boy, girl, null)
+  const genderForApi = data.gender === 'unknown' ? null : data.gender;
 
   const response = await api.put<OnboardingResponse>('/users/profile', {
     dueDate: data.dueDate,
-    gender: data.gender,
-    theme: themeMap[data.gender] || 'neutral',
+    gender: genderForApi,
+    theme: themeMap[data.gender || 'null'] || 'neutral',
     ...(data.avatar && { avatar: data.avatar }),
   });
 
@@ -46,12 +50,9 @@ export const completeOnboarding = async (formData: OnboardingFormValues): Promis
     avatarUrl = await uploadAvatar(formData.avatar);
   }
 
-  // Конвертуємо 'unknown' в null для API (згідно з вимогами: boy, girl, null)
-  const genderForApi = formData.gender === 'unknown' ? null : formData.gender;
-
   const user = await updateOnboarding({
     dueDate: formData.dueDate,
-    gender: genderForApi || 'unknown', // Якщо null, відправляємо 'unknown' для теми
+    gender: formData.gender, // 'unknown' буде конвертовано в null в updateOnboarding
     avatar: avatarUrl,
   });
 
