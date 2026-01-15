@@ -31,7 +31,13 @@ export default function JourneyDetails({ data }: { data: PregnancyWeek }) {
       {/* <section className={css.container}> */}
       <section>
         <div className={clsx(css.journeyContainer, css.container)}>
-          <div className={css.tabContainer}>
+          <div
+            className={clsx(
+              css.tabContainer,
+              selectedTab === 1 && css.slideRight,
+            )}
+          >
+            <div className={css.tabIndicator} />
             <button
               className={clsx(css.tabButton, selectedTab === 0 && css.active)}
               onClick={() => setSelectedTab(0)}

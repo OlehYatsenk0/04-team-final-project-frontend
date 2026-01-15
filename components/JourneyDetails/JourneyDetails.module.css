@@ -40,10 +40,27 @@
   border-radius: 100px;
   padding: 4px;
   width: 100%;
-  background: var(--color-scheme-foreground);
+  background-color: var(--color-scheme-foreground);
+  position: relative;
+}
+
+.tabIndicator {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  width: calc(50%);
+  background-color: var(--color-scheme-accent);
+  border-radius: 100px;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slideRight .tabIndicator {
+  transform: translateX(calc(100%));
 }
 
 .tabButton {
+  background-color: transparent;
   border: 1px solid var(--opacity-transparent);
   border-radius: 100px;
   padding: 10px 24px;
@@ -54,16 +71,13 @@
   line-height: 160%;
   color: var(--color-scheme-text);
   cursor: pointer;
-}
-
-.tabButton.active {
-  background: var(--color-scheme-accent);
-  border: 1px solid var(--opacity-transparent);
+  position: relative;
 }
 
 .tabButton:hover,
-.tabButton:focus {
-  background: var(--color-scheme-accent);
+.tabButton:focus,
+.tabButton:active {
+  border: 1px solid var(--opacity-transparent);
 }
 
 /* Розвиток малюка */
