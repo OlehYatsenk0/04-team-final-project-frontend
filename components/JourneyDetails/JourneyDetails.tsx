@@ -4,6 +4,7 @@ import { useState } from 'react';
 import css from './JourneyDetails.module.css';
 import clsx from 'clsx';
 import Image from 'next/image';
+import TasksReminderCard from '../TasksReminderCard/TasksReminderCard';
 
 const CATEGORY_ICONS: Record<string, string> = {
   Харчування: 'fork_spoon',
@@ -14,6 +15,17 @@ const CATEGORY_ICONS: Record<string, string> = {
 export default function JourneyDetails({ data }: { data: PregnancyWeek }) {
   const [selectedTab, setSelectedTab] = useState(0);
 
+  const page = 'journeyPage';
+
+  const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(true);
+
+  function openAddTaskModal(): void {
+    setIsAddTaskModalOpen(true);
+  }
+
+  function closeAddTaskModal(): void {
+    setIsAddTaskModalOpen(false);
+  }
   return (
     <>
       {/* <section className={css.container}> */}
@@ -127,7 +139,10 @@ export default function JourneyDetails({ data }: { data: PregnancyWeek }) {
                 </div>
               </div>
               <div className={css.tasksComponent}>
-                {/* Tasks component content to be implemented */}
+                <TasksReminderCard
+                  page={page}
+                  openAddTaskModal={openAddTaskModal}
+                />
               </div>
             </div>
           )}

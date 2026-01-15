@@ -20,32 +20,34 @@
 }
 
 .journeyContainer {
-  width: 100%;
+  width: 1064px;
   padding: 24px 0;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
 }
 
 .tabContainer {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  margin: 0 auto;
   margin-bottom: 16px;
   border: 1px solid var(--opacity-transparent);
   border-radius: 100px;
   padding: 4px;
-  max-width: 100%;
+  width: 100%;
   background: var(--color-scheme-foreground);
 }
 
 .tabButton {
   border: 1px solid var(--opacity-transparent);
-  border-bottom: 4px solid var(--opacity-neutral-darkest-15);
   border-radius: 100px;
   padding: 10px 24px;
   width: 100%;
-  background: var(--color-scheme-foreground-alt);
   font-family: var(--font-family);
   font-weight: 500;
   font-size: 14px;
@@ -59,8 +61,9 @@
   border: 1px solid var(--opacity-transparent);
 }
 
-.tabButton:hover {
-  background: var(--color-scheme-foreground);
+.tabButton:hover,
+.tabButton:focus {
+  background: var(--color-scheme-accent);
 }
 
 /* Розвиток малюка */
@@ -240,7 +243,7 @@
   border: 0px solid var(--color-scheme-border);
   width: 100%;
   min-height: 280px;
-  background: var(--color-scheme-foreground-alt);
+  background: var(--color-scheme-foreground);
 }
 
 /* Tablet */
@@ -264,23 +267,31 @@
   }
 
   .tasksComponent {
-    flex: 0 0 320px;
     min-height: 498px;
+  }
+
+  .momContent,
+  .babyContent {
+    width: 100%;
   }
 }
 
 /* Desktop */
 @media only screen and (min-width: 1336px) {
   .tabContainer {
-    margin: 0 246px 16px 246px;
+    max-width: 572px;
   }
 
   .momContent,
   .babyContent {
     flex-wrap: nowrap;
+    max-width: 1064px;
   }
 
   .babyImage {
     aspect-ratio: 461 / 379;
+  }
+  .tasksComponent {
+    max-width: fit-content;
   }
 }
