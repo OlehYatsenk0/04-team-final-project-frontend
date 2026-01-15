@@ -8,6 +8,7 @@
 @media (min-width: 768px) {
   .statusBlock {
     gap: 32px;
+    margin-bottom: 32px;
   }
 }
 
@@ -35,6 +36,8 @@
 }
 
 .statusBlock__label {
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
   font-size: 14px;
   line-height: 150%;
 }

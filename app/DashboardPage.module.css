@@ -1,22 +1,35 @@
-.container {
-  padding: 16px 20px 32px 20px;
-  max-width: 375px;
-  min-width: 375px;
-  width: 100%;
-  min-height: 100vh;
-  margin: 0 auto;
+.zaglushka {
+  border-radius: 32px;
+  width: 335px;
+  height: 688px;
+  background: #fff4f6;
+  margin-bottom: 32px;
 }
 
 @media (min-width: 768px) {
-  .container {
-    max-width: 768px;
-    padding: 16px 32px 32px 32px;
+  .zaglushka {
+    width: 704px;
+    height: 671px;
   }
 }
 
 @media (min-width: 1440px) {
-  .container {
-    max-width: 1440px;
-    padding: 16px 32px 32px 32px;
+  .blockWrapper {
+    display: flex;
+    gap: 32px;
+  }
+
+  .firstBlock {
+    max-width: 642px;
+  }
+
+  .secondBlock {
+    max-width: 422px;
+  }
+
+  .zaglushka {
+    height: 499px;
+    width: 390px;
+    margin-bottom: 32px;
   }
 }

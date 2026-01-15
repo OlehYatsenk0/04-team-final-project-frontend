@@ -1,5 +1,4 @@
-import styles from './DashboardPage.module.css';
-import { lato } from './fonts';
+import styles from './page.module.css';
 import {
   dehydrate,
   HydrationBoundary,
@@ -7,6 +6,7 @@ import {
 } from '@tanstack/react-query';
 import { fetchWeek } from '@/lib/api/api';
 import DashboardPageClient from './DashboardPage.client';
+import Header from '@/components/Header/Header';
 
 async function DashboardPage() {
   const queryClient = new QueryClient();
@@ -17,13 +17,16 @@ async function DashboardPage() {
   });
 
   return (
-    <main className={styles.main}>
-      <div className={styles.container}>
-        <HydrationBoundary state={dehydrate(queryClient)}>
-          <DashboardPageClient />
-        </HydrationBoundary>
-      </div>
-    </main>
+    <>
+      <Header />
+      <main className={styles.main}>
+        <div className={styles.container}>
+          <HydrationBoundary state={dehydrate(queryClient)}>
+            <DashboardPageClient />
+          </HydrationBoundary>
+        </div>
+      </main>
+    </>
   );
 }
 

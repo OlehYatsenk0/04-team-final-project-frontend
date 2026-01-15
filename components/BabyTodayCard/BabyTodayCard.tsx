@@ -1,4 +1,3 @@
-import { ComfortTip } from '@/types/week';
 import css from './BabyTodayCard.module.css';
 import Image from 'next/image';
 
@@ -19,25 +18,31 @@ function BabyTodayCard({ baby }: BabyTodayCardProps) {
     <>
       <section className={css.babyTodayCard}>
         <h2 className={css.babyTodayCard__title}>Малюк сьогодні</h2>
-        <div className={css.babyTodayCard__imageBox}>
-          <Image
-            src={baby.image}
-            alt="Малюк"
-            width={287}
-            height={216}
-            priority
-          />
+        <div className={css.babyTodayCard__imageWithTextBox}>
+          <div className={css.babyTodayCard__imageBox}>
+            <Image
+              className={css.babyTodayCard__image}
+              src={baby.image}
+              alt="Малюк"
+              width={287}
+              height={216}
+              priority
+            />
+          </div>
+          <div className={css.babyTodayCard__paragraphBox}>
+            <p className={css.babyTodayCard__paragraph}>
+              <strong>Розмір:</strong> Приблизно {baby.babySize} см.
+            </p>
+            <p className={css.babyTodayCard__paragraph}>
+              <strong>Вага:</strong> Близько {baby.babyWeight} грамів.
+            </p>
+            <p className={css.babyTodayCard__paragraph}>
+              <strong>Активність:</strong> {baby.babyActivity}
+            </p>
+          </div>
         </div>
-        <p>
-          <strong>Розмір:</strong> Приблизно {baby.babySize} см.
-        </p>
-        <p>
-          <strong>Вага:</strong> Близько {baby.babyWeight} грамів.
-        </p>
-        <p>
-          <strong>Активність:</strong> {baby.babyActivity}
-        </p>
-        <p>{baby.babyDevelopment}</p>
+
+        <p className={css.babyTodayCard__paragraph}>{baby.babyDevelopment}</p>
       </section>
     </>
   );
