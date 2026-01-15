@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import css from './DiaryPage.module.css';
 import GreetingBlock from '@/components/Diary/GreetingBlock/GreetingBlock';
 import DiaryList from '@/components/Diary/DiaryList/DiaryList';
@@ -12,25 +13,59 @@ import Loader from '@/components/Loader/Loader';
 import ErrorMessage from '@/components/Diary/ErrorMessage/ErrorMessage';
 
 export default function DiaryPageClient() {
-    const { data: diaries, isError, isFetching, error, isSuccess } = useQuery({
-        queryKey: ['diaries'],
-        queryFn: () => fetchDiaries(),
-        refetchOnMount: false,
-    });
-    const [selectedDiaryIndex, setSelectedDiaryIndex] = useState<number>(0);
+  const {
+    data: diaries,
+    isError,
+    isFetching,
+    error,
+    isSuccess,
+  } = useQuery({
+    queryKey: ['diaries'],
+    queryFn: () => fetchDiaries(),
+    refetchOnMount: false,
+  });
+  const [selectedDiaryIndex, setSelectedDiaryIndex] = useState<number>(0);
 
-    return (
-        <section className={css.sectionContainer}>
-            <GreetingBlock />
-            <div className={css.contentContainer}>
-                {!!diaries?.length && <>
-                    <DiaryList diaries={diaries} setSelectedDiaryIndex={setSelectedDiaryIndex} />
-                    <DiaryEntryDetails diary={diaries[selectedDiaryIndex]} className={css.entryDetails} />
-                </>}
-                {isFetching && <Loader />}
-                {isError && <ErrorMessage message={error.message} />}
-                {isSuccess && !diaries?.length && <EmptyMessage message="Наразі записи у щоденнику відсутні" />}
+  return (
+    <section className={css.sectionContainer}>
+      <GreetingBlock />
+      <div className={css.contentContainer}>
+        {!!diaries?.length && (
+          <>
+            <DiaryList
+              diaries={diaries}
+              setSelectedDiaryIndex={setSelectedDiaryIndex}
+            />
+            <div className={css.entryDetailsContainer}>
+              <div className={css.animatedContent}>
+                <AnimatePresence mode="sync">
+                  <motion.div
+                    key={diaries[selectedDiaryIndex]._id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.4, ease: 'easeInOut' }}
+                    style={{
+                      position: 'absolute',
+                      width: '100%',
+                    }}
+                  >
+                    <DiaryEntryDetails
+                      diary={diaries[selectedDiaryIndex]}
+                      className={css.entryDetails}
+                    />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
             </div>
-        </section>
-    );
-} 
+          </>
+        )}
+        {isFetching && <Loader />}
+        {isError && <ErrorMessage message={error.message} />}
+        {isSuccess && !diaries?.length && (
+          <EmptyMessage message="Наразі записи у щоденнику відсутні" />
+        )}
+      </div>
+    </section>
+  );
+}
