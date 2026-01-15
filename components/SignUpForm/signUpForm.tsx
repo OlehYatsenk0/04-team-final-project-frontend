@@ -6,9 +6,17 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/store/authStore';
 import Image from 'next/image';
 
+import { register as registerUser } from '@/lib/api/clientApi';
+import '@/lib/validation/yup';
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
+
+declare module 'yup' {
+  interface StringSchema {
+    strictEmail(message?: string): StringSchema;
+  }
+}
 
 // Types
 interface SignUpFormValues {
@@ -30,8 +38,8 @@ const SignUpFormSchema = Yup.object().shape({
     .max(32, 'Імʼя має бути коротшим за 32 символи')
     .required("Імʼя обов'язкове"),
   email: Yup.string()
+    .strictEmail('Невірний формат email') //сделать проверку другую, сейчас не выдаёт ошибку при неправильном варианте почты, выдаёт только "обязательная почта"
     .max(64, 'Пошта має бути коротшою за 64 символи')
-    .email('Невірний формат email')
     .required("Пошта обов'язкова"),
   password: Yup.string()
     .min(8, 'Пароль має бути не менше 8 символів')
@@ -42,18 +50,24 @@ const SignUpFormSchema = Yup.object().shape({
 // Component
 export default function SignUpForm() {
   const router = useRouter();
-  const register = useAuthStore((state) => state.register);
+  const setUser = useAuthStore((state) => state.setUser);
+
   const handleSubmit = async (
     values: SignUpFormValues,
     actions: FormikHelpers<SignUpFormValues>,
   ) => {
     try {
       toast.info('Реєстрація...');
-      await register(values);
-      toast.info('Реєстрація успішна!');
+
+      const user = await registerUser(values);
+
+      setUser(user);
+
+      toast.success('Реєстрація успішна!');
+      // вот тут нужен setUser, нормальные роуты не через userAuthStore
       actions.resetForm();
       router.push('/profile/edit');
-    } catch (error: unknown) {
+    } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
       } else {
@@ -78,6 +92,8 @@ export default function SignUpForm() {
         <Formik
           initialValues={initialValues}
           validationSchema={SignUpFormSchema}
+          validateOnChange
+          validateOnBlur
           onSubmit={handleSubmit}
         >
           {({ errors, touched, isSubmitting }) => (

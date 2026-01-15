@@ -1,6 +1,7 @@
 import { PregnancyWeek } from '@/types/week';
 import { api } from './api';
 import { LoginData, RegistrationData, User } from '@/types/user';
+import axios from 'axios';
 
 export async function fetchWeekClient(
   weekNumber: number,
@@ -16,9 +17,21 @@ export const login = async (loginData: LoginData) => {
   return data;
 };
 
-export const register = async (registrationData: RegistrationData) => {
-  const { data } = await api.post<User>('/auth/register', registrationData);
-  return data;
+export const register = async (
+  registrationData: RegistrationData,
+): Promise<User> => {
+  // вот это убрать и перенести в clientApi
+  try {
+    const { data } = await api.post<User>('/auth/register', registrationData);
+    return data;
+  } catch (error) {
+    let message = 'Щось пішло не так. Спробуйте пізніше.';
+
+    if (axios.isAxiosError(error)) {
+      message = error.response?.data?.message ?? message;
+    }
+    throw new Error(message);
+  }
 };
 
 import type {
