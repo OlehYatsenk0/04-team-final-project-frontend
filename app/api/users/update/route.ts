@@ -8,7 +8,7 @@ export async function PATCH(request: NextRequest) {
   try {
     const body = await request.json();
     const cookieStore = await cookies();
-    const res = await api.patch('/users/update', body, {
+    const res = await api.patch('/api/users/update', body, {
       headers: {
         Cookie: cookieStore.toString(),
       },

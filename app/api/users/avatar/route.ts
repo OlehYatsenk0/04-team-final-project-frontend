@@ -8,7 +8,7 @@ export async function PATCH(request: NextRequest) {
   try {
     const formData = await request.formData();
     const cookieStore = await cookies();
-    const res = await api.patch('/users/avatar', formData, {
+    const res = await api.patch('/api/users/avatar', formData, {
       headers: {
         Cookie: cookieStore.toString(),
         'Content-Type': 'multipart/form-data',
