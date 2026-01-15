@@ -1,6 +1,7 @@
-import { PregnancyWeek } from '@/types/week';
+import { Task, TaskStatus } from '@/types/task';
 import { api } from './api';
 import { User, LoginData } from '@/types/user';
+import { PregnancyWeek } from '@/types/week';
 
 interface ApiResponse<T> {
   status: number;
@@ -35,6 +36,31 @@ export const uploadAvatar = async (file: File): Promise<User> => {
     },
   );
   return response.data.data;
+};
+
+//* Tasks =================================================
+export interface FetchTasksResponse {
+  data: Task[];
+}
+
+export interface UpdateTaskStateRequest {
+  id: string;
+  checked: boolean;
+}
+
+export const fetchTasks = async (): Promise<FetchTasksResponse> => {
+  const response = await api.get<FetchTasksResponse>('/tasks');
+  return response.data;
+};
+
+export const updateTaskStatus = async ({
+  checked,
+  id,
+}: UpdateTaskStateRequest) => {
+  const response = await api.patch<TaskStatus>(`/tasks/${id}`, {
+    isDone: checked,
+  });
+  return response.data;
 };
 
 export async function fetchWeekClient(
