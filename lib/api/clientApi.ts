@@ -1,5 +1,7 @@
 import { Task, TaskStatus } from '@/types/task';
 import { api } from './api';
+import { PregnancyWeek, Week } from '@/types/week';
+import { LoginData, User } from '@/types/user';
 import { User, LoginData } from '@/types/user';
 import { PregnancyWeek } from '@/types/week';
 
@@ -77,6 +79,25 @@ export async function fetchWeekClient(
   return data;
 }
 
+export async function fetchWeekDashboardClient(): Promise<Week | null> {
+  try {
+    const { data } = await api.get<Week>('/weeks');
+    return data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
+export async function fetchCurrentWeekDashboardClient(): Promise<Week | null> {
+  try {
+    const { data } = await api.get<Week>('/weeks/current');
+    return data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
 // Create POST function, a request to save a task note
 export const createTask = async (
   task: CreateTaskRequest,
