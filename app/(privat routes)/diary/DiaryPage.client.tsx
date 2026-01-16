@@ -10,18 +10,20 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchDiaries } from '@/lib/api/clientApi';
 import Loader from '@/components/Loader/Loader';
 import ErrorMessage from '@/components/Diary/ErrorMessage/ErrorMessage';
+import clsx from 'clsx';
 
 export default function DiaryPageClient() {
   const {
     data: diaries,
     isError,
-    isFetching,
+    isLoading,
     error,
     isSuccess,
   } = useQuery({
     queryKey: ['diaries'],
     queryFn: () => fetchDiaries(),
     refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
   const [selectedDiaryIndex, setSelectedDiaryIndex] = useState<number>(0);
 
@@ -55,8 +57,15 @@ export default function DiaryPageClient() {
             </div>
           </>
         )}
-        {isFetching && <Loader />}
-        {isError && <ErrorMessage message={error.message} />}
+        {isLoading && <Loader className={css.loader} />}
+        {isError && (
+          <ErrorMessage
+            message={error.message}
+            className={clsx({
+              [css.error]: isError,
+            })}
+          />
+        )}
         {isSuccess && !diaries?.length && (
           <EmptyMessage message="Наразі записи у щоденнику відсутні" />
         )}

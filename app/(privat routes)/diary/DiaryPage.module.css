@@ -26,6 +26,14 @@
     position: relative;
 }
 
+.error,
+.loader {
+    position: fixed;
+    top: 390px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 @media only screen and (min-width: 768px) {
     .sectionContainer {
         padding: 16px 32px 32px 32px;
