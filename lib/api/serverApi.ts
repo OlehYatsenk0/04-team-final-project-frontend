@@ -1,6 +1,6 @@
 import { api } from '@/app/api/api';
 import { Task } from '@/types/task';
-import { PregnancyWeek } from '@/types/week';
+import { PregnancyWeek, Week } from '@/types/week';
 import { cookies } from 'next/headers';
 import { Diary } from '@/types/diary';
 import { ApiResponse } from '@/types/axios';
@@ -10,6 +10,26 @@ export async function fetchWeekServer(
 ): Promise<PregnancyWeek> {
   const { data } = await api.get(`/weeks/${weekNumber}`);
   return data;
+}
+
+export async function fetchWeekDashboardServer(): Promise<Week | null> {
+  try {
+    const { data } = await api.get<Week>('/weeks');
+    return data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
+export async function fetchCurrentWeekDashboardServer(): Promise<Week | null> {
+  try {
+    const { data } = await api.get<Week>('/weeks/current');
+    return data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
 }
 
 export const fetchServerDiaries = async () => {
@@ -39,7 +59,7 @@ export interface FetchTasksResponse {
 
 export const fetchTasks = async (): Promise<FetchTasksResponse> => {
   const cookieStore = await cookies();
-  const response = await api.get<FetchTasksResponse>('/tasks', {
+  const response = await api.get<FetchTasksResponse>('/api/tasks', {
     headers: {
       Cookie: cookieStore.toString(),
     },

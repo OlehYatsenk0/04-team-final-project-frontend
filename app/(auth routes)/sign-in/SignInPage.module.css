@@ -25,7 +25,6 @@
   display: block;
 }
 
-
 .formTitle {
   font-family: var(--second-family);
   font-weight: 700;
@@ -108,9 +107,8 @@
   color: var(--color-scheme-text);
   border-bottom: 4px solid var(--color-scheme-accent);
   background: var(--color-scheme-foreground-alt);
-    opacity: 0.3;
+  opacity: 0.3;
   cursor: not-allowed;
-
 }
 .nav {
   display: flex;
@@ -136,11 +134,12 @@
   text-decoration-skip-ink: none;
   text-align: center;
   color: var(--color-scheme-text);
-    transition: color 0.2s ease;
+  transition: color 0.2s ease;
 }
 .link:hover,
 .link:focus {
-color: var(--opacity-neutral-darkest-60);}
+  color: var(--opacity-neutral-darkest-60);
+}
 .img {
   display: none;
 }
