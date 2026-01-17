@@ -11,12 +11,12 @@ interface AddTaskFormProps {
 }
 
 interface FormValues {
-  title: string;
+  name: string;
   date: string;
 }
 
 const validationSchema = Yup.object({
-  title: Yup.string()
+  name: Yup.string()
     .min(3, 'Мінімум 3 символи')
     .required('Введіть назву завдання'),
   date: Yup.string().required('Оберіть дату'),
@@ -24,13 +24,13 @@ const validationSchema = Yup.object({
 
 export default function AddTaskForm({ onSuccess }: AddTaskFormProps) {
   const initialValues: FormValues = {
-    title: '',
+    name: '',
     date: new Date().toISOString().split('T')[0],
   };
 
   const handleSubmit = async (
     values: FormValues,
-    { setSubmitting }: FormikHelpers<FormValues>
+    { setSubmitting }: FormikHelpers<FormValues>,
   ) => {
     try {
       await createTask(values);
@@ -44,23 +44,42 @@ export default function AddTaskForm({ onSuccess }: AddTaskFormProps) {
 
   return (
     <Formik
-      initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit} >
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
+    >
       {({ isSubmitting }) => (
         <Form className={styles.form}>
-          <label className={styles.label}>Назва завдання
-            <Field name="title" type="text" className={styles.input} />
-            <ErrorMessage name="title" component="span" className={styles.error} />
+          <label className={styles.label}>
+            Назва завдання
+            <Field name="name" type="text" className={styles.input} />
+            <ErrorMessage
+              name="name"
+              component="span"
+              className={styles.error}
+            />
           </label>
 
-          <label className={styles.label}> Дата
+          <label className={styles.label}>
+            {' '}
+            Дата
             <Field name="date" type="date" className={styles.input} />
-            <ErrorMessage name="date" component="span" className={styles.error} />
+            <ErrorMessage
+              name="date"
+              component="span"
+              className={styles.error}
+            />
           </label>
 
-          <button type="submit" className={styles.submit} disabled={isSubmitting}>Зберегти</button>
+          <button
+            type="submit"
+            className={styles.submit}
+            disabled={isSubmitting}
+          >
+            Зберегти
+          </button>
         </Form>
       )}
     </Formik>
   );
 }
-
