@@ -14,15 +14,28 @@ const WeekSelector = ({ weekNumber }: { weekNumber: number }) => {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
+  // useEffect(() => {
+  //   if (activeRef.current && !isDragging) {
+  //     activeRef.current.scrollIntoView({
+  //       behavior: 'smooth',
+  //       inline: 'center',
+  //       block: 'nearest',
+  //     });
+  //   }
+  // }, [weekNumber, isDragging]);
+
+  const hasAutoScrolled = useRef(false);
+
   useEffect(() => {
-    if (activeRef.current && !isDragging) {
+    if (activeRef.current && !hasAutoScrolled.current) {
       activeRef.current.scrollIntoView({
         behavior: 'smooth',
         inline: 'center',
         block: 'nearest',
       });
+      hasAutoScrolled.current = true;
     }
-  }, [weekNumber, isDragging]);
+  }, [weekNumber]);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLElement>) => {
     if (!containerRef.current) return;
