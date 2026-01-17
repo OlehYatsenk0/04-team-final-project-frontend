@@ -1,7 +1,7 @@
 import { ApiResponse } from '@/types/axios';
 import { Diary } from '@/types/diary';
 import { Task, TaskStatus } from '@/types/task';
-import { api } from './api';
+import  api  from './api';
 import { PregnancyWeek, Week } from '@/types/week';
 import { LoginData, RegistrationData, User } from '@/types/user';
 
@@ -187,3 +187,20 @@ export const completeOnboarding = async (
 
   return user;
 };
+
+
+export const checkSession = async (): Promise<User | null> => {
+  try {
+    const { data: session } = await api.get('/auth/session');
+    if (session?.success) {
+      const { data: user } = await api.get('/users/current');
+      return user;
+    }
+
+    return null;
+  } catch (error) {
+    console.error('checkSession error:', error);
+    return null;
+  }
+};
+
