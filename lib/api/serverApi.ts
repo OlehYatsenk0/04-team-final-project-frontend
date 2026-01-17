@@ -46,7 +46,12 @@ export async function fetchWeekDashboardServer(): Promise<Week | null> {
 
 export async function fetchCurrentWeekDashboardServer(): Promise<Week | null> {
   try {
-    const { data } = await api.get<Week>('/weeks/current');
+    const cookieStore = await cookies();
+    const { data } = await api.get<Week>('/api/weeks/current', {
+      headers: {
+        Cookie: cookieStore.toString(),
+      },
+    });
     return data;
   } catch (err) {
     console.log(err);
@@ -89,9 +94,7 @@ export const fetchTasks = async (): Promise<FetchTasksResponse> => {
   return response.data;
 };
 
-
-
-import  api2  from "./api";
+import api2 from './api';
 export interface SessionResponse {
   success: boolean;
 }
@@ -100,13 +103,11 @@ export const checkServerSession = async (): Promise<
   AxiosResponse<SessionResponse>
 > => {
   const cookieStore = await cookies();
-  const res = await api2.post('/auth/session', null,
-    {
-      headers: {
-        Cookie: cookieStore.toString(),
-      },
+  const res = await api2.post('/auth/session', null, {
+    headers: {
+      Cookie: cookieStore.toString(),
     },
-  );
+  });
 
   return res;
 };
