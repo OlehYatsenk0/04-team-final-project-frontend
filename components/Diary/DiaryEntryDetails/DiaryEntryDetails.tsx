@@ -1,14 +1,23 @@
 'use client';
 
+import { useState } from 'react';
 import css from './DiaryEntryDetails.module.css';
 import { Diary } from '@/types/diary';
 import { getFormattedDate } from '@/app/helpers/utils';
+import Modal from '@/components/Modal/Modal';
+import { DiaryButton } from '../DiaryButton/DiaryButton';
 
 interface DiaryEntryDetailsProps {
   diary: Diary;
 }
 
 export default function DiaryEntryDetails({ diary }: DiaryEntryDetailsProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <>
       <div className={css.header}>
@@ -22,7 +31,10 @@ export default function DiaryEntryDetails({ diary }: DiaryEntryDetailsProps) {
         </div>
         <div className={css.date}>
           <span className={css.dateText}>{getFormattedDate(diary.date)}</span>
-          <button className={css.deleteButton}>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className={css.deleteButton}
+          >
             <svg className={css.deleteSvgIcon} width="24" height="24">
               <use href="/img/sprite.svg#icon-delete"></use>
             </svg>
@@ -39,6 +51,19 @@ export default function DiaryEntryDetails({ diary }: DiaryEntryDetailsProps) {
           </span>
         ))}
       </div>
+      {isModalOpen && (
+        <Modal handleClose={handleModalClose}>
+          <p className={css.modalText}>Ви точно хочете видалити запис?</p>
+          <div className={css.buttonsContainer}>
+            <DiaryButton role="secondary" onClick={handleModalClose}>
+              Ні
+            </DiaryButton>
+            <DiaryButton role="primary" onClick={handleModalClose}>
+              Так
+            </DiaryButton>
+          </div>
+        </Modal>
+      )}
     </>
   );
 }
