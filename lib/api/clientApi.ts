@@ -1,7 +1,7 @@
 import { ApiResponse } from '@/types/axios';
 import { Diary } from '@/types/diary';
 import { Task, TaskStatus } from '@/types/task';
-import { api } from './api';
+import  api  from './api';
 import { PregnancyWeek, Week } from '@/types/week';
 import { LoginData, RegistrationData, User } from '@/types/user';
 
@@ -29,7 +29,7 @@ export interface UpdateTaskStateRequest {
 }
 
 export interface CreateTaskRequest {
-  title: string;
+  name: string;
   date: string;
 }
 
@@ -77,9 +77,7 @@ export async function fetchCurrentWeekDashboardClient(): Promise<Week | null> {
   }
 }
 // Create POST function, a request to save a task note
-export const createTask = async (
-  task: CreateTaskRequest,
-): Promise<Task> => {
+export const createTask = async (task: CreateTaskRequest): Promise<Task> => {
   const { data } = await api.post<Task>('/tasks', task);
   return data;
 };
@@ -96,6 +94,11 @@ export const fetchDiaries = async () => {
 
 export const fetchDiaryById = async (id: string) => {
   const { data } = await api.get<ApiResponse<Diary>>(`/diaries/${id}`);
+  return data.data;
+};
+
+export const deleteDiary = async (id: string) => {
+  const { data } = await api.delete<ApiResponse<Diary>>(`/diaries/${id}`);
   return data.data;
 };
 
@@ -184,3 +187,20 @@ export const completeOnboarding = async (
 
   return user;
 };
+
+
+export const checkSession = async (): Promise<User | null> => {
+  try {
+    const { data: session } = await api.get('/auth/session');
+    if (session?.success) {
+      const { data: user } = await api.get('/users/current');
+      return user;
+    }
+
+    return null;
+  } catch (error) {
+    console.error('checkSession error:', error);
+    return null;
+  }
+};
+

@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
         };
         if (parsed.accessToken) cookieStore.set('accessToken', parsed.accessToken, options);
         if (parsed.refreshToken) cookieStore.set('refreshToken', parsed.refreshToken, options);
+        if (parsed.sessionId) cookieStore.set('sessionId', parsed.sessionId);
       }
       return NextResponse.json(apiRes.data, { status: apiRes.status });
     }

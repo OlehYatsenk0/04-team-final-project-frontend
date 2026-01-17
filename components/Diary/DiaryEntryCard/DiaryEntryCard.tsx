@@ -5,12 +5,12 @@ import { Diary } from '@/types/diary';
 
 interface DiaryEntryCardProps {
   diary: Diary;
-  onClick: (id: string) => void;
+  onClick?: (id: string) => void;
 }
 
 export default function DiaryEntryCard({
   diary,
-  onClick,
+  onClick = () => {},
 }: DiaryEntryCardProps) {
   return (
     <li className={css.container}>
