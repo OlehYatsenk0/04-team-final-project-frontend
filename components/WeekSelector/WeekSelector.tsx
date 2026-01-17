@@ -1,87 +1,75 @@
 'use client';
 import { motion } from 'framer-motion';
-
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import css from './WeekSelector.module.css';
+import { useJourneyStore } from '@/lib/store/journeyStore';
 
 const WeekSelector = ({ weekNumber }: { weekNumber: number }) => {
   const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
   const activeRef = useRef<HTMLAnchorElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const currentWeek = useJourneyStore((s) => s.currentWeek);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
 
   useEffect(() => {
-    if (activeRef.current) {
+    if (activeRef.current && !isDragging) {
       activeRef.current.scrollIntoView({
         behavior: 'smooth',
         inline: 'center',
         block: 'nearest',
       });
     }
-  }, [weekNumber]);
+  }, [weekNumber, isDragging]);
 
-  useEffect(() => {
-    const slider = containerRef.current;
-    if (!slider) return;
+  const handleMouseDown = (e: React.MouseEvent<HTMLElement>) => {
+    if (!containerRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - containerRef.current.offsetLeft);
+    setScrollLeft(containerRef.current.scrollLeft);
+  };
 
-    let isDown = false;
-    let startX = 0;
-    let scrollLeft = 0;
+  const handleMouseLeaveOrUp = () => {
+    setIsDragging(false);
+  };
 
-    const mouseDown = (e: MouseEvent) => {
-      isDown = true;
-      slider.classList.add(css.dragging);
-      startX = e.pageX - slider.offsetLeft;
-      scrollLeft = slider.scrollLeft;
-    };
-
-    const mouseLeave = () => {
-      isDown = false;
-      slider.classList.remove(css.dragging);
-    };
-
-    const mouseUp = () => {
-      isDown = false;
-      slider.classList.remove(css.dragging);
-    };
-
-    const mouseMove = (e: MouseEvent) => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - slider.offsetLeft;
-      const walk = (x - startX) * 1.2;
-      slider.scrollLeft = scrollLeft - walk;
-    };
-
-    slider.addEventListener('mousedown', mouseDown);
-    slider.addEventListener('mouseleave', mouseLeave);
-    slider.addEventListener('mouseup', mouseUp);
-    slider.addEventListener('mousemove', mouseMove);
-
-    return () => {
-      slider.removeEventListener('mousedown', mouseDown);
-      slider.removeEventListener('mouseleave', mouseLeave);
-      slider.removeEventListener('mouseup', mouseUp);
-      slider.removeEventListener('mousemove', mouseMove);
-    };
-  }, []);
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (!isDragging || !containerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - containerRef.current.offsetLeft;
+    const walk = (x - startX) * 2;
+    containerRef.current.scrollLeft = scrollLeft - walk;
+  };
 
   return (
-    <nav className={css.week_selector_container}>
+    <nav
+      ref={containerRef}
+      className={`${css.week_selector_container} ${isDragging ? css.dragging : ''}`}
+      onMouseDown={handleMouseDown}
+      onMouseLeave={handleMouseLeaveOrUp}
+      onMouseUp={handleMouseLeaveOrUp}
+      onMouseMove={handleMouseMove}
+    >
       {weeks.map((num) => {
-        const isFuture = num > weekNumber;
+        const isFuture = currentWeek ? num > currentWeek : false;
         const isSelected = num === weekNumber;
 
         return (
           <Link
             key={num}
             href={isFuture ? '#' : `/journey/${num}`}
+            ref={isSelected ? activeRef : null}
+            onClick={(e) => {
+              if (isDragging || isFuture) e.preventDefault();
+            }}
+            draggable={false}
             className={`
         ${css.week_item} 
         ${isSelected ? css.active : ''} 
         ${isFuture ? css.disabled : ''}
       `}
-            onClick={(e) => isFuture && e.preventDefault()}
           >
             <span className={css.week_number}>{num}</span>
             <span className={css.week_label}>Тиждень</span>

@@ -20,11 +20,10 @@ function JourneyPageClient({ weekNumber }: Props) {
     refetchOnWindowFocus: false,
   });
 
-  if (isLoading) return <Loader />;
-
   return (
     <div className={css.page}>
       <WeekSelector weekNumber={weekNumber} />
+      {isLoading && <Loader />}
       {data && <JourneyDetails data={data} />}
     </div>
   );
