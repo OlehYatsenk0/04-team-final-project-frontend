@@ -10,8 +10,18 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchDiaries } from '@/lib/api/clientApi';
 import Loader from '@/components/Loader/Loader';
 import ErrorMessage from '@/components/Diary/ErrorMessage/ErrorMessage';
+import { QUERY_KEYS } from '@/app/const/queryKeys';
+import {
+  useMutation,
+  useQueryClient,
+  keepPreviousData,
+} from '@tanstack/react-query';
+import { deleteDiary } from '@/lib/api/clientApi';
+import toast from 'react-hot-toast';
 
 export default function DiaryPageClient() {
+  const queryClient = useQueryClient();
+
   const {
     data: diaries,
     isError,
@@ -19,11 +29,25 @@ export default function DiaryPageClient() {
     error,
     isSuccess,
   } = useQuery({
-    queryKey: ['diaries'],
+    queryKey: [QUERY_KEYS.DIARIES],
     queryFn: () => fetchDiaries(),
     refetchOnMount: false,
     refetchOnWindowFocus: false,
+    placeholderData: keepPreviousData,
   });
+
+  const { mutate: deleteDiaryRequest, isPending: isDeletingDiary } =
+    useMutation({
+      mutationFn: deleteDiary,
+      onSuccess: () => {
+        toast.success('Запис успішно видалено!');
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DIARIES] });
+      },
+      onError: () => {
+        toast.error('Виникла помилка при видаленні запису!');
+      },
+    });
+
   const [selectedDiaryIndex, setSelectedDiaryIndex] = useState<number>(0);
   const selectedDiary = diaries?.[selectedDiaryIndex];
 
@@ -35,6 +59,7 @@ export default function DiaryPageClient() {
             diaries={diaries || []}
             isEmpty={isSuccess && !diaries?.length}
             setSelectedDiaryIndex={setSelectedDiaryIndex}
+            isPending={isDeletingDiary}
           />
           <div className={css.entryDetailsContainer}>
             <div className={css.animatedContent}>
@@ -51,14 +76,18 @@ export default function DiaryPageClient() {
                   }}
                 >
                   {!!selectedDiary && (
-                    <DiaryEntryDetails diary={diaries[selectedDiaryIndex]} />
+                    <DiaryEntryDetails
+                      isPending={isDeletingDiary}
+                      onDelete={deleteDiaryRequest}
+                      diary={diaries[selectedDiaryIndex]}
+                    />
                   )}
                 </motion.div>
               </AnimatePresence>
             </div>
           </div>
         </>
-        {isLoading && <Loader className={css.loader} />}
+        {(isLoading || isDeletingDiary) && <Loader className={css.loader} />}
         {isError && (
           <ErrorMessage
             message={error.message}

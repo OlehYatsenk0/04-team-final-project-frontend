@@ -1,3 +1,8 @@
+.mainContent {
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
 .container {
   max-width: 480px;
   margin: 0 auto;
@@ -7,10 +12,22 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  min-height: calc(100vh - 72px);
   width: 100%;
 }
-
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 95px;
+  height: 45px;
+  gap: 5px;
+  margin-top: 22px;
+}
+.logo-icon,
+.stork-icon {
+  display: block;
+}
 .title {
   font-family: var(--second-family);
   font-size: 48px;
@@ -213,7 +230,9 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
-
+.img {
+  display: none;
+}
 /* Адаптивність */
 @media (max-width: 768px) {
   .container {
@@ -245,7 +264,20 @@
 }
 
 @media (min-width: 1440px) {
+  .mainContent {
+      max-width: 1440px;
+      display: flex;
+      position: relative;
+    }
+  
+    .logo {
+      position: absolute;
+      left: 69px;
+    }
   .container {
     max-width: 480px;
   }
+    .img {
+      display: block;
+    }
 }

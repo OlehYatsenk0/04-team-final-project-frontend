@@ -1,9 +1,10 @@
+import { Metadata } from 'next';
 import { QueryClient } from '@tanstack/react-query';
 import { fetchServerDiaries } from '@/lib/api/serverApi';
 import { HydrationBoundary } from '@tanstack/react-query';
 import { dehydrate } from '@tanstack/react-query';
 import DiaryPageClient from './DiaryPage.client';
-import { Metadata } from 'next';
+import { QUERY_KEYS } from '@/app/const/queryKeys';
 
 export const metadata: Metadata = {
   title: 'Щоденник',
@@ -14,7 +15,7 @@ export default async function DiaryPage() {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ['diaries'],
+    queryKey: [QUERY_KEYS.DIARIES],
     queryFn: () => fetchServerDiaries(),
   });
   return (

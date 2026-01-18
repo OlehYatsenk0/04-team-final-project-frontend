@@ -8,7 +8,7 @@ export async function GET() {
   try {
     const cookieStore = await cookies();
 
-    const res = await api('api/weeks', {
+    const res = await api('/api/weeks', {
       headers: {
         Cookie: cookieStore.toString(),
       },

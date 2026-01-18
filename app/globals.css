@@ -164,3 +164,11 @@ body {
 	padding: 0;
 	box-sizing: border-box;
 }
+
+@media screen and (min-width:1440px) {
+	body {
+		max-width: 1440px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}

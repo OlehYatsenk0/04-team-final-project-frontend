@@ -1,7 +1,7 @@
 import { ApiResponse } from '@/types/axios';
 import { Diary } from '@/types/diary';
 import { Task, TaskStatus } from '@/types/task';
-import { api } from './api';
+import api from './api';
 import { PregnancyWeek, Week } from '@/types/week';
 import { LoginData, RegistrationData, User } from '@/types/user';
 
@@ -29,7 +29,7 @@ export interface UpdateTaskStateRequest {
 }
 
 export interface CreateTaskRequest {
-  title: string;
+  name: string;
   date: string;
 }
 
@@ -87,9 +87,9 @@ export const login = async (loginData: LoginData) => {
   return data.data;
 };
 
-export const logout = async (): Promise<void> => {
-  await api.post('/auth/logout', {}, { withCredentials: true });
-};
+export async function logout() {
+  await api.post<void>(`/auth/logout`);
+}
 
 export const fetchDiaries = async () => {
   const { data } = await api.get<ApiResponse<Diary[]>>(`/diaries`);
@@ -98,6 +98,11 @@ export const fetchDiaries = async () => {
 
 export const fetchDiaryById = async (id: string) => {
   const { data } = await api.get<ApiResponse<Diary>>(`/diaries/${id}`);
+  return data.data;
+};
+
+export const deleteDiary = async (id: string) => {
+  const { data } = await api.delete<ApiResponse<Diary>>(`/diaries/${id}`);
   return data.data;
 };
 
@@ -185,4 +190,19 @@ export const completeOnboarding = async (
   setTheme(getThemeFromGender(user.gender));
 
   return user;
+};
+
+export const checkSession = async (): Promise<User | null> => {
+  try {
+    const { data: session } = await api.get('/auth/session');
+    if (session?.success) {
+      const { data: user } = await api.get('/users/current');
+      return user;
+    }
+
+    return null;
+  } catch (error) {
+    console.error('checkSession error:', error);
+    return null;
+  }
 };

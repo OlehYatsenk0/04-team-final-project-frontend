@@ -38,7 +38,7 @@
 
     &:hover,
     &:focus {
-        transform: scale(1.2);
+        transform: scale(1.5);
     }
 }
 
@@ -89,6 +89,25 @@
     padding: 4px 10px;
 }
 
+.modalText {
+    font-family: var(--second-family);
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 120%;
+    letter-spacing: 0.01em;
+    text-align: center;
+    color: var(--color-scheme-text);
+    margin-bottom: 48px;
+}
+
+.buttonsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
 @media only screen and (min-width: 1440px) {
 
     .titleText {
@@ -109,5 +128,9 @@
 
     .description {
         overflow-y: auto;
+    }
+
+    .modalText {
+        font-size: 48px;
     }
 }

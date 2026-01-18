@@ -16,10 +16,13 @@
 
 .tasksCard.journeyPage {
   min-height: 705px;
+  /* min-height: auto; */
+  display: flex;
+  flex-direction: column;
 }
 
 .tasksCard:has(.tasksLists.empty) {
-  min-height: 209px;
+  min-height: 705px;
 }
 
 .tasksCardHeader {
@@ -54,13 +57,16 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  overflow-y: auto;
+  scroll-behavior: smooth;
 }
 
 .tasksLists {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  height: 584px;
+  max-height: 584px;
   overflow-y: auto;
   scrollbar-gutter: stable;
 }
@@ -138,10 +144,14 @@
     width: 100%;
     max-width: 704px;
     min-height: 671px;
+
+    /* min-height: 705px; */
   }
 
   .tasksLists {
-    height: 567px;
+    /* max-height: 567px; */
+
+    max-height: 584px; /* Triggers scroll after this point */
   }
 
   .tasksListCreateBtn {
@@ -158,8 +168,7 @@
   .tasksCard.dashboardPage,
   .tasksCard.journeyPage {
     padding: 24px 24px 16px;
-    width: 100%;
-    max-width: 390px;
+    width: 390px;
     min-height: 499px;
   }
 
@@ -168,7 +177,7 @@
   }
 
   .tasksLists {
-    height: 403px;
+    max-height: 403px;
   }
 
   .tasksCard.dashboardPage:has(.tasksLists.empty),

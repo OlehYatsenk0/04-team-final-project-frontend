@@ -1,20 +1,35 @@
 'use client';
 
+import { useState } from 'react';
 import css from './DiaryEntryDetails.module.css';
 import { Diary } from '@/types/diary';
 import { getFormattedDate } from '@/app/helpers/utils';
+import Modal from '@/components/Modal/Modal';
+import { DiaryButton } from '../DiaryButton/DiaryButton';
 
 interface DiaryEntryDetailsProps {
   diary: Diary;
+  isPending: boolean;
+  onDelete: (id: string) => void;
 }
 
-export default function DiaryEntryDetails({ diary }: DiaryEntryDetailsProps) {
+export default function DiaryEntryDetails({
+  diary,
+  isPending,
+  onDelete,
+}: DiaryEntryDetailsProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <>
       <div className={css.header}>
         <div className={css.title}>
           <h2 className={css.titleText}>{diary.title}</h2>
-          <button className={css.editButton}>
+          <button className={css.editButton} disabled={isPending}>
             <svg className={css.editSvgIcon} width="21" height="21">
               <use href="/img/sprite.svg#icon-edit"></use>
             </svg>
@@ -22,7 +37,11 @@ export default function DiaryEntryDetails({ diary }: DiaryEntryDetailsProps) {
         </div>
         <div className={css.date}>
           <span className={css.dateText}>{getFormattedDate(diary.date)}</span>
-          <button className={css.deleteButton}>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className={css.deleteButton}
+            disabled={isPending}
+          >
             <svg className={css.deleteSvgIcon} width="24" height="24">
               <use href="/img/sprite.svg#icon-delete"></use>
             </svg>
@@ -39,6 +58,25 @@ export default function DiaryEntryDetails({ diary }: DiaryEntryDetailsProps) {
           </span>
         ))}
       </div>
+      {isModalOpen && (
+        <Modal handleClose={handleModalClose}>
+          <p className={css.modalText}>Ви точно хочете видалити запис?</p>
+          <div className={css.buttonsContainer}>
+            <DiaryButton role="secondary" onClick={handleModalClose}>
+              Ні
+            </DiaryButton>
+            <DiaryButton
+              role="primary"
+              onClick={() => {
+                onDelete(diary._id);
+                handleModalClose();
+              }}
+            >
+              Так
+            </DiaryButton>
+          </div>
+        </Modal>
+      )}
     </>
   );
 }
