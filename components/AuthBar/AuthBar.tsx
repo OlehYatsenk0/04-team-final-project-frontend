@@ -1,7 +1,8 @@
 'use client';
+import { clsx } from 'clsx';
 import Link from 'next/link';
 import styles from './AuthBar.module.css';
-import { clsx } from 'clsx';
+
 export default function AuthBar() {
   return (
     <div className={styles.boxFooter}>

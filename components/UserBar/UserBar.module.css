@@ -48,6 +48,25 @@
   }
 }
 
+.modalText {
+  font-family: var(--second-family);
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 120%;
+  letter-spacing: 0.01em;
+  text-align: center;
+  color: var(--color-scheme-text);
+  margin-bottom: 48px;
+}
+
+.buttonsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
 @media (min-width: 1440px) {
   .name {
     font-size: 14px;
@@ -55,5 +74,9 @@
 
   .email {
     font-size: 14px;
+  }
+
+  .modalText {
+    font-size: 48px;
   }
 }
