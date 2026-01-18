@@ -31,16 +31,18 @@ export default function UserBar() {
 
   return (
     <div className={css.cover}>
-      <Image
-        src={avatarSrc}
-        width={40}
-        height={40}
-        className={css.avatar}
-        alt="User's avatar"
-      />
-      <div className={css.details}>
-        <h3 className={css.name}>{user?.name || "Ім'я"}</h3>
-        <p className={css.email}>{user?.email || 'email@example.com'}</p>
+      <div className={css.avatarContainer}>
+        <Image
+          src={avatarSrc}
+          width={40}
+          height={40}
+          className={css.avatar}
+          alt="User's avatar"
+        />
+        <div className={css.details}>
+          <h3 className={css.name}>{user?.name || "Ім'я"}</h3>
+          <p className={css.email}>{user?.email || 'email@example.com'}</p>
+        </div>
       </div>
       <button onClick={() => setIsModalOpen(true)} className={css.logoutBtn}>
         <svg width="24" height="24">
