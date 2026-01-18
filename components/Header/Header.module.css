@@ -8,7 +8,15 @@
   z-index: 100;
 }
 
-/* MOBILE */
+@media (min-width: 1440px) {
+  .header {
+    width: 312px;
+    left: 50%;
+    transform: translateX(-720px);
+  
+  }
+}
+
 .navigator_header {
   display: flex;
   justify-content: space-between;
