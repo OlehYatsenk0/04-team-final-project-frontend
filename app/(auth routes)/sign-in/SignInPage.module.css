@@ -38,13 +38,13 @@
   margin-bottom: 32px;
 }
 .formGroup {
-  position: relative;
+    display: flex;
+      flex-direction: column;
+  margin-bottom: 16px;
 }
 
 .error {
-  position: absolute;
-  top: 38px;
-  left: 0;
+
   font-family: var(--font-family);
   font-weight: 400;
   font-size: 12px;
@@ -55,10 +55,10 @@
   border: 2px solid var(--opacity-transparent);
   border-radius: 12px;
   padding: 8px 12px;
-  width: 311px;
-  height: 21px;
+  width: 335px;
+  height: 37px;
   background: var(--opacity-neutral-darkest-5);
-  margin-bottom: 16px;
+  
   outline: none;
   transition: border-color 0.2s ease;
 }
@@ -150,8 +150,8 @@
   }
 
   .input {
-    width: 456px;
-    height: 21px;
+    width:480px;
+    height: 37px;
   }
 
   .submitButton {

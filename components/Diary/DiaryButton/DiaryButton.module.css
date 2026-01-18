@@ -16,12 +16,12 @@
 
 
     &:hover {
-        background-color: var(--color-pastel-pink-lighter);
+        background-color: var(--color-white);
         border-bottom: 4px solid var(--opacity-neutral-darkest-15);
     }
 
     &:active {
-        background-color: var(--color-pastel-pink);
+        background-color: var(--color-neutral-light);
         border-bottom: 0px solid var(--opacity-neutral-darkest-15);
     }
 }
@@ -31,11 +31,12 @@
     border-bottom: 4px solid var(--opacity-neutral-darkest-15);
 
     &:hover {
-        background-color: var(--color-white);
+        background-color: var(--color-pastel-pink-lighter);
+        border-bottom: 4px solid var(--opacity-neutral-darkest-15);
     }
 
     &:active {
-        background-color: var(--color-neutral-light);
+        background-color: var(--color-pastel-pink);
         border-bottom: 0px solid var(--opacity-neutral-darkest-15);
     }
 }

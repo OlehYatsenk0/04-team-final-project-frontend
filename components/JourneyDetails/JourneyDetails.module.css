@@ -1,8 +1,6 @@
 .container {
   min-width: 320px;
   max-width: 375px;
-  margin: 0 auto;
-  padding: 0 16px;
 }
 
 /* Styles for Tablet devices */
@@ -21,8 +19,7 @@
 
 .journeyContainer {
   width: 1064px;
-  padding: 24px 0;
-  margin: 0 auto;
+  padding: 32px 20px 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -72,6 +69,7 @@
   color: var(--color-scheme-text);
   cursor: pointer;
   position: relative;
+  white-space: nowrap;
 }
 
 .tabButton:hover,
@@ -200,9 +198,6 @@
   width: 100%;
   background: var(--color-scheme-foreground);
 }
-.comfortBlock {
-  margin-bottom: 0;
-}
 
 .feelingsList {
   padding-left: 0;
@@ -258,8 +253,9 @@
 /* Tablet */
 @media only screen and (min-width: 768px) {
   .journeyContainer {
-    padding: 32px 0;
+    padding: 32px 32px 24px;
   }
+
   .babyImage {
     aspect-ratio: 656 / 379;
   }
