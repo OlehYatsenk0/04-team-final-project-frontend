@@ -9,7 +9,8 @@ import { completeOnboarding } from '@/lib/api/clientApi';
 import { useAuthStore } from '@/lib/store/authStore';
 import type { OnboardingFormValues } from '@/types/onboarding';
 import styles from './OnboardingForm.module.css';
-
+import Link from 'next/link';
+import Image from 'next/image';
 const validationSchema = Yup.object().shape({
   avatar: Yup.mixed<File>()
     .nullable()
@@ -73,7 +74,17 @@ export default function OnboardingForm() {
   });
 
   return (
+    <main className={styles.mainContent}>
+      <Link className={styles.logo} href="/">
+        <svg className="logo-icon" width="30" height="30">
+          <use href="/img/logo/sprite.svg#icon-logo"></use>
+        </svg>
+        <svg className="stork-icon" width="61" height="13">
+          <use href="/img/logo/sprite.svg#icon-stork"></use>
+        </svg>
+      </Link>
     <div className={styles.container}>
+      
       <h1 className={styles.title}>Давайте познаймимось ближче</h1>
 
       <Formik
@@ -191,6 +202,14 @@ export default function OnboardingForm() {
           </Form>
         )}
       </Formik>
-    </div>
+      </div>
+       <Image
+        className={styles.img}
+        src="/img/onbording.png"
+              alt="login"
+              width={720}
+              height={900}
+            />
+    </main >
   );
 }
