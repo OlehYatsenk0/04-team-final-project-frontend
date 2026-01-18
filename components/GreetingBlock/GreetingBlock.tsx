@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './GreetingBlock.module.css';
 
 interface GreetingBlockProps {
-  userName: string;
+  userName?: string;
 }
 
 const GreetingBlock: React.FC<GreetingBlockProps> = ({ userName }) => {
