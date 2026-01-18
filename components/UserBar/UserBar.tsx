@@ -1,9 +1,10 @@
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 import Image from 'next/image';
 import css from './UserBar.module.css';
 import { useAuthStore } from '@/lib/store/authStore';
 import { logout } from '@/lib/api/clientApi';
-import { useRouter } from 'next/navigation';
-import { toast } from 'react-toastify';
+
 export default function UserBar() {
   const { user, clearAuth } = useAuthStore();
   const router = useRouter();
