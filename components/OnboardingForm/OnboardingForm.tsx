@@ -40,7 +40,7 @@ const validationSchema = Yup.object().shape({
       return date >= minDate && date <= maxDate;
     }),
   gender: Yup.string()
-    .oneOf(['boy', 'girl', 'unknown', null], 'Оберіть стать дитини')
+    .oneOf(['boy', 'girl', 'unknown'], 'Оберіть стать дитини')
     .nullable(),
 });
 
@@ -94,6 +94,8 @@ export default function OnboardingForm() {
           try {
             await mutation.mutateAsync(values);
           } catch (error) {
+            console.log(error);
+            
             // Помилка обробляється в onError
           }
         }}
@@ -104,7 +106,7 @@ export default function OnboardingForm() {
             <div className={styles.avatarSection}>
               <div className={styles.avatarWrapper}>
                 {values.avatar ? (
-                  <img
+                  <Image
                     src={URL.createObjectURL(values.avatar)}
                     alt="Avatar preview"
                     className={styles.avatarImage}
