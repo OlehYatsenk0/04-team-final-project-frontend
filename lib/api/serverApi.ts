@@ -95,8 +95,6 @@ export const fetchTasks = async (): Promise<FetchTasksResponse> => {
   return response.data;
 };
 
-<<<<<<< HEAD
-=======
 export const fetchServerCurrentUser = async (): Promise<User> => {
   const cookieStore = await cookies();
   const response = await api.get<ApiResponse<User>>('/users/current', {
@@ -108,7 +106,6 @@ export const fetchServerCurrentUser = async (): Promise<User> => {
 };
 
 import api2 from './api';
->>>>>>> ec8ddf75a9363ca5800d51d41d3ddf4f0d48c05c
 export interface SessionResponse {
   success: boolean;
 }
