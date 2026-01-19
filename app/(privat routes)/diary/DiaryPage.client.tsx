@@ -82,7 +82,6 @@ export default function DiaryPageClient() {
                 >
                   {!!selectedDiary && (
                     <DiaryEntryDetails
-                      isPending={isDeletingDiary}
                       onDelete={deleteDiaryRequest}
                       diary={diaries[selectedDiaryIndex]}
                     />

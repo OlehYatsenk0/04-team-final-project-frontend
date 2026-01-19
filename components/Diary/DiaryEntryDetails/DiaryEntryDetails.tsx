@@ -17,14 +17,12 @@ import { QUERY_KEYS } from '@/app/const/queryKeys';
 
 interface DiaryEntryDetailsProps {
   diary: Diary;
-  isPending: boolean;
   onDelete: (id: string) => void;
 }
 
 export default function DiaryEntryDetails({
   diary,
-  isPending,
-  onDelete,
+  onDelete
 }: DiaryEntryDetailsProps) {
   const queryClient = useQueryClient();
 
@@ -66,7 +64,6 @@ export default function DiaryEntryDetails({
 
           <button
             className={css.editButton}
-            disabled={isPending}
             onClick={() => setIsEditModalOpen(true)}
             aria-label="Редагувати запис"
             type="button"
@@ -83,7 +80,6 @@ export default function DiaryEntryDetails({
           <button
             onClick={() => setIsDeleteModalOpen(true)}
             className={css.deleteButton}
-            disabled={isPending}
             type="button"
             aria-label="Видалити запис"
           >
@@ -117,6 +113,7 @@ export default function DiaryEntryDetails({
             <DiaryButton
               role="primary"
               onClick={() => {
+                console.log(diary._id);
                 onDelete(diary._id);
                 handleDeleteModalClose();
               }}
