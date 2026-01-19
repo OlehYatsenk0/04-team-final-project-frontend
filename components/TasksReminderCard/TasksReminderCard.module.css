@@ -15,9 +15,10 @@
 }
 
 .tasksCard.journeyPage {
-  min-height: auto;
+  /* min-height: auto;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; */
+  height: 705px;
 }
 
 .tasksCard:has(.tasksLists.empty) {
@@ -172,7 +173,7 @@
   }
 
   .tasksLists {
-    max-height: 403px;
+    /* max-height: 403px; */
   }
 
   .tasksCard.dashboardPage:has(.tasksLists.empty),

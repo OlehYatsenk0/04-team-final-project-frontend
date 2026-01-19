@@ -6,12 +6,10 @@ import styles from './AddTaskModal.module.css';
 
 interface Props {
   onClose: () => void;
-  isOpen: boolean;
 }
 
-export default function AddTaskModal({ onClose, isOpen }: Props) {
+export default function AddTaskModal({ onClose }: Props) {
   useEffect(() => {
-    if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
@@ -20,7 +18,7 @@ export default function AddTaskModal({ onClose, isOpen }: Props) {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onClose, isOpen]);
+  }, [onClose]);
 
   return (
     <div className={styles.backdrop} onClick={onClose}>
