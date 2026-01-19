@@ -7,6 +7,7 @@ import { useAuthStore } from '@/lib/store/authStore';
 import { getCurrentUser, updateUser } from '@/lib/api/clientApi';
 import { User } from '@/types/user';
 import css from './ProfileEditForm.module.css';
+import toast from 'react-hot-toast';
 
 const validationSchema = Yup.object({
   name: Yup.string()
@@ -31,21 +32,24 @@ export default function ProfileEditForm() {
   const { user, setUser } = useAuthStore();
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
+  const [formKey, setFormKey] = useState(0);
   const selectRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if ( user) {
+    if (user) {
       setIsLoadingData(false);
     }
-  }, [ user]);
+  }, [user]);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const userData = await getCurrentUser();
         setUser(userData);
+        setFormKey((prev) => prev + 1); // Reinitialize form when fetching fresh user data
       } catch (error) {
         console.error('Error fetching user:', error);
+        toast.error('Помилка завантаження даних користувача');
       } finally {
         setIsLoadingData(false);
       }
@@ -54,7 +58,7 @@ export default function ProfileEditForm() {
     if (!user) {
       fetchUser();
     }
-  }, [ user, setUser]);
+  }, [user, setUser]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -95,18 +99,21 @@ export default function ProfileEditForm() {
     try {
       const updatedUser = await updateUser(updates);
       setUser(updatedUser);
-      console.log('User updated successfully:', updatedUser);
+      setFormKey((prev) => prev + 1); // Reinitialize form with new saved values
+      toast.success('Дані успішно оновлено!');
     } catch (error) {
       console.error('Error updating user:', error);
+      toast.error('Помилка оновлення даних');
     }
   };
 
   return (
     <Formik
+      key={formKey}
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
-      enableReinitialize={true}
+      enableReinitialize={false}
     >
       {({ isSubmitting, resetForm, values, setFieldValue }) => (
         <Form className={css.form}>
