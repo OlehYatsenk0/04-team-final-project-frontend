@@ -164,11 +164,16 @@
     max-width: 1440px;
     display: flex;
     position: relative;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
   }
 
   .logo {
     position: absolute;
     left: 69px;
+    top: 50%;
+    transform: translateY(-436px);
   }
   .content {
     min-height: 900px;

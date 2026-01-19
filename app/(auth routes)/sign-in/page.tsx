@@ -9,6 +9,7 @@ import * as Yup from 'yup';
 import { AxiosError } from 'axios';
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik';
 import { login } from '@/lib/api/clientApi';
+import 'izitoast/dist/css/iziToast.min.css';
 
 interface OrderFormValues {
   email: string;
@@ -100,6 +101,8 @@ export default function SignIn() {
                 <Field
                   id="password"
                   name="password"
+                  type="password"
+
                   className={`${css.input} ${
                     errors.password && touched.password ? css.inputError : ''
                   }`}
