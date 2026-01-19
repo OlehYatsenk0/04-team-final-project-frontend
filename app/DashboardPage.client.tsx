@@ -2,7 +2,7 @@
 
 import BabyTodayCard from '@/components/BabyTodayCard/BabyTodayCard';
 import Loader from '@/components/Loader/Loader';
-import MomTipCard from '@/components/MomTipCard/MomTipCard';
+import {MomTipCard} from '@/components/MomTipCard/MomTipCard';
 import StatusBlock from '@/components/StatusBlock/StatusBlock';
 import { useQuery } from '@tanstack/react-query';
 import css from './DashboardPage.module.css';

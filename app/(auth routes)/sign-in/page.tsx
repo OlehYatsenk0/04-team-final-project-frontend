@@ -9,7 +9,6 @@ import * as Yup from 'yup';
 import { AxiosError } from 'axios';
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik';
 import { login } from '@/lib/api/clientApi';
-import iziToast from 'izitoast';
 
 interface OrderFormValues {
   email: string;
@@ -36,27 +35,30 @@ export default function SignIn() {
   const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
   const handleSubmit = async (
-    values: OrderFormValues,
-    actions: FormikHelpers<OrderFormValues>,
-  ) => {
-    try {
-      const user = await login(values);
+  values: OrderFormValues,
+  actions: FormikHelpers<OrderFormValues>,
+) => {
+  try {
+    const user = await login(values);
 
-      if (user) {
-        setUser(user);
-        router.push('/');
-        actions.resetForm();
-      }
-    } catch (error) {
-      const axiosError = error as AxiosError<{ message: string }>;
-      iziToast.error({
-        title: 'Помилка',
-        message:
-          axiosError.response?.data?.message || 'Невірна пошта або пароль',
-        position: 'topRight',
-      });
+    if (user) {
+      setUser(user);
+      router.push('/');
+      actions.resetForm();
     }
-  };
+  } catch (error) {
+    const { default: iziToast } = await import('izitoast');
+
+    const axiosError = error as AxiosError<{ message: string }>;
+
+    iziToast.error({
+      title: 'Помилка',
+      message:
+        axiosError.response?.data?.message || 'Невірна пошта або пароль',
+      position: 'topRight',
+    });
+  }
+};
 
   return (
     <main className={css.mainContent}>

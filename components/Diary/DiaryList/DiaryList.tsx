@@ -10,6 +10,7 @@ interface DiaryListProps {
   setSelectedDiaryIndex: (index: number) => void;
   isEmpty: boolean;
   isPending: boolean;
+  onCreateClick: () => void;
 }
 
 export default function DiaryList({
@@ -17,6 +18,7 @@ export default function DiaryList({
   setSelectedDiaryIndex,
   isEmpty,
   isPending,
+  onCreateClick,
 }: DiaryListProps) {
   const router = useRouter();
 
@@ -32,13 +34,20 @@ export default function DiaryList({
     <div className={css.container}>
       <div className={css.listHeader}>
         <h2 className={css.listTitle}>Ваші записи</h2>
-        <button className={css.newItemButton} disabled={isPending}>
+
+        <button
+          className={css.newItemButton}
+          disabled={isPending}
+          type="button"
+          onClick={onCreateClick}
+        >
           Новий запис
           <svg className={css.newItemSvgIcon} width="21" height="21">
             <use href="/img/sprite.svg#icon-plus"></use>
           </svg>
         </button>
       </div>
+
       <ul className={css.listContent}>
         {isEmpty ? (
           <DiaryEmptyMessage />

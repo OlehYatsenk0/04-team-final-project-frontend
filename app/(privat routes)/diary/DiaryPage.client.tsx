@@ -7,7 +7,7 @@ import css from './DiaryPage.module.css';
 import DiaryList from '@/components/Diary/DiaryList/DiaryList';
 import DiaryEntryDetails from '@/components/Diary/DiaryEntryDetails/DiaryEntryDetails';
 import { useQuery } from '@tanstack/react-query';
-import { fetchDiaries } from '@/lib/api/clientApi';
+import { fetchDiaries, deleteDiary } from '@/lib/api/clientApi';
 import Loader from '@/components/Loader/Loader';
 import ErrorMessage from '@/components/Diary/ErrorMessage/ErrorMessage';
 import { QUERY_KEYS } from '@/app/const/queryKeys';
@@ -16,11 +16,15 @@ import {
   useQueryClient,
   keepPreviousData,
 } from '@tanstack/react-query';
-import { deleteDiary } from '@/lib/api/clientApi';
 import toast from 'react-hot-toast';
+import AddDiaryEntryModal from '@/components/Diary/AddDiaryEntryModal/AddDiaryEntryModal';
 
 export default function DiaryPageClient() {
   const queryClient = useQueryClient();
+
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const openCreate = () => setIsCreateOpen(true);
+  const closeCreate = () => setIsCreateOpen(false);
 
   const {
     data: diaries,
@@ -60,6 +64,7 @@ export default function DiaryPageClient() {
             isEmpty={isSuccess && !diaries?.length}
             setSelectedDiaryIndex={setSelectedDiaryIndex}
             isPending={isDeletingDiary}
+            onCreateClick={openCreate}
           />
           <div className={css.entryDetailsContainer}>
             <div className={css.animatedContent}>
@@ -77,7 +82,6 @@ export default function DiaryPageClient() {
                 >
                   {!!selectedDiary && (
                     <DiaryEntryDetails
-                      isPending={isDeletingDiary}
                       onDelete={deleteDiaryRequest}
                       diary={diaries[selectedDiaryIndex]}
                     />
@@ -94,6 +98,15 @@ export default function DiaryPageClient() {
             className={clsx({
               [css.error]: isError,
             })}
+          />
+        )}
+        {isCreateOpen && (
+          <AddDiaryEntryModal
+            onClose={closeCreate}
+            onCreated={() => {
+              queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DIARIES] });
+              closeCreate();
+            }}
           />
         )}
       </div>

@@ -130,11 +130,11 @@ import type {
 import { setTheme, getThemeFromGender } from '@/lib/utils/theme';
 import axios from 'axios';
 
-export const uploadAvatar = async (avatarFile: File): Promise<string> => {
+export const uploadAvatar = async (avatarFile: File): Promise<User> => {
   const formData = new FormData();
   formData.append('avatar', avatarFile);
 
-  const response = await api.post<{ avatar: string }>(
+  const response = await api.patch<User>(
     '/users/avatar',
     formData,
     {
@@ -144,7 +144,7 @@ export const uploadAvatar = async (avatarFile: File): Promise<string> => {
     },
   );
 
-  return response.data.avatar;
+  return response.data;
 };
 
 export const updateOnboarding = async (data: {
@@ -178,7 +178,8 @@ export const completeOnboarding = async (
   let avatarUrl = '';
 
   if (formData.avatar) {
-    avatarUrl = await uploadAvatar(formData.avatar);
+    const uploadedUser = await uploadAvatar(formData.avatar);
+    avatarUrl = uploadedUser.avatar;
   }
 
   const user = await updateOnboarding({

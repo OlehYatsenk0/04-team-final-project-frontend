@@ -1,0 +1,227 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+/* ===== Label ===== */
+.label {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  color: #000;
+}
+
+.labelText {
+  font-size: 14px;
+}
+
+/* ===== Inputs ===== */
+.input {
+  width: 295px;
+  height: 40px;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  background: rgba(0, 0, 0, 0.06);
+  padding: 0 12px;
+  font-size: 14px;
+}
+
+.textarea {
+  width: 295px;
+  min-height: 220px;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  background: rgba(0, 0, 0, 0.06);
+  padding: 12px;
+  resize: none;
+  font-size: 14px;
+}
+
+.input:focus-visible,
+.textarea:focus-visible {
+  border-color: #ff9fb0;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.error {
+  font-size: 12px;
+  color: #e54848;
+}
+
+/* ===== Dropdown ===== */
+.dropdownRoot {
+  width: 295px;
+  position: relative;
+}
+
+.dropdownField {
+  width: 294px;
+  min-height: 44px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.06); /* ✔ як у placeholder */
+  border: 2px solid transparent;
+  padding: 8px 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.dropdownValue {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.placeholder {
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.selectedChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.08);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+}
+
+/* ===== Chevron ===== */
+.chevronBtn {
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chevron {
+  transition: transform 0.2s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+/* ===== Dropdown panel ===== */
+.dropdownPanel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+
+  width: 294px;
+  height: 220px;
+
+  border-radius: 12px;
+  background: #f2f2f2; /* ✔ світло-сірий як у поля */
+  border: 1px solid rgba(0, 0, 0, 0.08);
+
+  overflow: hidden;
+  z-index: 50;
+}
+
+.dropdownList {
+  height: 100%;
+  overflow-y: auto;
+  padding: 6px 0;
+  margin: 0;
+  list-style: none;
+}
+
+/* ===== Items ===== */
+.dropdownItem {
+  padding: 0 10px;
+}
+
+.itemLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 4px;
+  cursor: pointer;
+}
+
+/* ===== Custom checkbox ===== */
+.checkbox {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+
+  /* ✔ не вибраний — темніший світло-сірий */
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.25);
+
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+}
+
+.checkbox::after {
+  content: '';
+  width: 6px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  opacity: 0;
+}
+
+/* ✔ вибраний — чорний + біла галочка */
+.checkbox:checked {
+  background: #000;
+  border-color: #000;
+}
+
+.checkbox:checked::after {
+  opacity: 1;
+}
+
+.itemText {
+  font-size: 14px;
+}
+
+/* ===== Submit ===== */
+.submit {
+  width: 295px;
+  height: 44px;
+  border-radius: 100px;
+  border: none;
+  background: #ffdae0;
+  cursor: pointer;
+}
+
+.submit:disabled {
+  opacity: 0.6;
+}
+
+@media (min-width: 768px) {
+  .input,
+  .textarea,
+  .dropdownRoot,
+  .dropdownField,
+  .dropdownPanel,
+  .submit {
+    width: 640px;
+  }
+
+  .dropdownField,
+  .dropdownPanel {
+    width: 640px;
+  }
+}

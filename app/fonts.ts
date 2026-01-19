@@ -1,7 +1,7 @@
 import { Lato, Comfortaa } from 'next/font/google';
 
 export const lato = Lato({
-  subsets: ['latin', 'cyrillic'],
+  subsets: ['latin'],
   weight: ['400', '700'],
   display: 'swap',
 });
