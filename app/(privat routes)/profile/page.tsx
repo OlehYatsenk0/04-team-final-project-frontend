@@ -7,11 +7,12 @@ import Header from '@/components/Header/Header';
 
 export default function ProfilePage() {
   return (
-  <>
+    <>
       <Header />
-    <div className={css.container}>
-      <ProfileAvatar />
-      <ProfileEditForm />
-      </div> </>
+      <div className={css.container}>
+        <ProfileAvatar />
+        <ProfileEditForm />
+      </div>{' '}
+    </>
   );
 }
