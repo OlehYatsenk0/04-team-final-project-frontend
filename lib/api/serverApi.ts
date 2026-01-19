@@ -5,6 +5,7 @@ import { cookies } from 'next/headers';
 import { Diary } from '@/types/diary';
 import { ApiResponse } from '@/types/axios';
 import { AxiosResponse } from 'axios';
+import { User } from '@/types/user';
 
 export async function fetchWeekServer(
   weekNumber: number,
@@ -94,6 +95,20 @@ export const fetchTasks = async (): Promise<FetchTasksResponse> => {
   return response.data;
 };
 
+<<<<<<< HEAD
+=======
+export const fetchServerCurrentUser = async (): Promise<User> => {
+  const cookieStore = await cookies();
+  const response = await api.get<ApiResponse<User>>('/users/current', {
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
+  });
+  return response.data.data;
+};
+
+import api2 from './api';
+>>>>>>> ec8ddf75a9363ca5800d51d41d3ddf4f0d48c05c
 export interface SessionResponse {
   success: boolean;
 }

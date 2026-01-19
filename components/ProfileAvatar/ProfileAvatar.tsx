@@ -6,12 +6,24 @@ import { useAuthStore } from '@/lib/store/authStore';
 import { uploadAvatar } from '@/lib/api/clientApi';
 import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { QUERY_KEYS } from '@/app/const/queryKeys';
+import { User } from '@/types/user';
 
 export default function ProfileAvatar() {
-  const { user, setUser } = useAuthStore();
+  const { setUser } = useAuthStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [avatarKey, setAvatarKey] = useState(Date.now());
+  const queryClient = useQueryClient();
+
+  const { data: user } = useQuery<User>({
+    queryKey: [QUERY_KEYS.USER_PROFILE],
+    queryFn: async () => {
+      const { getCurrentUser } = await import('@/lib/api/clientApi');
+      return getCurrentUser();
+    },
+  });
 
   const handleUploadClick = () => {
     fileInputRef.current?.click();
@@ -37,6 +49,7 @@ export default function ProfileAvatar() {
       setIsUploading(true);
       const updatedUser = await uploadAvatar(file);
       setUser(updatedUser);
+      queryClient.setQueryData([QUERY_KEYS.USER_PROFILE], updatedUser);
       setAvatarKey(Date.now());
       toast.success('Аватар успішно оновлено!');
     } catch (error) {

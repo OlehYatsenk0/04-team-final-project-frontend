@@ -140,7 +140,8 @@ export const uploadAvatar = async (avatarFile: File): Promise<User> => {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-  });
+    },
+  );
   return response.data.data;
 };
 
@@ -185,10 +186,9 @@ export const completeOnboarding = async (
 
 export const checkSession = async (): Promise<User | null> => {
   try {
-    const { data: session , } = await api.get('/auth/session');
-    if (session?.success) {
+    const { data: session } = await api.get('/auth/session');
+    if (session?.success && session?.data?.user) {
       console.log(session.success);
-      
       return session.data.user;
     }
 
