@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import styles from './AddTaskModal.module.css';
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import { createTask } from '@/lib/api/clientApi';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface AddTaskFormProps {
   onSuccess: () => void;
@@ -29,23 +30,32 @@ const validationSchema = Yup.object({
 });
 
 export default function AddTaskForm({ onSuccess }: AddTaskFormProps) {
+  const queryClient = useQueryClient();
+
   const initialValues: FormValues = {
     name: '',
     date: new Date().toISOString().split('T')[0],
   };
 
+  const createTaskMutation = useMutation({
+    mutationFn: createTask,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tasks'] });
+      toast.success('Завдання успішно створено');
+      onSuccess();
+    },
+    onError: () => {
+      toast.error('Помилка створення завдання');
+    },
+  });
+
   const handleSubmit = async (
     values: FormValues,
     { setSubmitting }: FormikHelpers<FormValues>,
   ) => {
-    try {
-      await createTask(values);
-      onSuccess();
-    } catch {
-      toast.error('Помилка створення завдання');
-    } finally {
-      setSubmitting(false);
-    }
+    createTaskMutation.mutate(values, {
+      onSettled: () => setSubmitting(false),
+    });
   };
 
   return (
@@ -79,7 +89,7 @@ export default function AddTaskForm({ onSuccess }: AddTaskFormProps) {
           <button
             type="submit"
             className={styles.submit}
-            disabled={isSubmitting}
+            disabled={isSubmitting || createTaskMutation.isPending}
           >
             Зберегти
           </button>

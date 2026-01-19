@@ -34,18 +34,18 @@ export interface CreateTaskRequest {
 }
 
 export const fetchTasks = async (): Promise<FetchTasksResponse> => {
-  const response = await api.get<FetchTasksResponse>('/tasks');
-  return response.data;
+  const { data } = await api.get<FetchTasksResponse>('/tasks');
+  return data;
 };
 
 export const updateTaskStatus = async ({
   checked,
   id,
 }: UpdateTaskStateRequest) => {
-  const response = await api.patch<TaskStatus>(`/tasks/${id}`, {
+  const { data } = await api.patch<TaskStatus>(`/tasks/${id}`, {
     isDone: checked,
   });
-  return response.data;
+  return data;
 };
 
 export async function fetchWeekClient(
@@ -141,9 +141,7 @@ export const uploadAvatar = async (avatarFile: File): Promise<User> => {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-    },
-  );
-
+  });
   return response.data.data;
 };
 

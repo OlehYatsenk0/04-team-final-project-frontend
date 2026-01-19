@@ -6,10 +6,12 @@ import styles from './AddTaskModal.module.css';
 
 interface Props {
   onClose: () => void;
+  isOpen: boolean;
 }
 
-export default function AddTaskModal({ onClose }: Props) {
+export default function AddTaskModal({ onClose, isOpen }: Props) {
   useEffect(() => {
+    if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
@@ -18,12 +20,18 @@ export default function AddTaskModal({ onClose }: Props) {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
+  }, [onClose, isOpen]);
 
   return (
     <div className={styles.backdrop} onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()} >
-        <button className={styles.close} onClick={onClose} aria-label="Close modal">×</button>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <button
+          className={styles.close}
+          onClick={onClose}
+          aria-label="Close modal"
+        >
+          ×
+        </button>
         <h2 className={styles.title}>Нове завдання</h2>
 
         <AddTaskForm onSuccess={onClose} />
