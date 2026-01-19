@@ -153,7 +153,6 @@ export default function JourneyDetails({ data }: { data: PregnancyWeek }) {
               {isAddTaskModalOpen && (
                 <AddTaskModal
                   onClose={closeAddTaskModal}
-                  isOpen={isAddTaskModalOpen}
                 />
               )}
             </div>
