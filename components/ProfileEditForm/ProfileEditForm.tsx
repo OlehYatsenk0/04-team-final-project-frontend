@@ -4,10 +4,12 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useEffect, useState, useRef } from 'react';
 import { useAuthStore } from '@/lib/store/authStore';
-import { getCurrentUser, updateUser } from '@/lib/api/clientApi';
+import { updateUser } from '@/lib/api/clientApi';
 import { User } from '@/types/user';
 import css from './ProfileEditForm.module.css';
 import toast from 'react-hot-toast';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { QUERY_KEYS } from '@/app/const/queryKeys';
 
 const validationSchema = Yup.object({
   name: Yup.string()
@@ -29,34 +31,22 @@ interface FormValues {
 }
 
 export default function ProfileEditForm() {
-  const { user, setUser } = useAuthStore();
-  const [isLoadingData, setIsLoadingData] = useState(true);
+  const { setUser } = useAuthStore();
   const [isSelectOpen, setIsSelectOpen] = useState(false);
-  const [formKey, setFormKey] = useState(0);
   const selectRef = useRef<HTMLDivElement>(null);
+  const queryClient = useQueryClient();
+
+  const { data: user, isLoading: isLoadingData } = useQuery<User>({
+    queryKey: [QUERY_KEYS.USER_PROFILE],
+    queryFn: async () => {
+      const { getCurrentUser } = await import('@/lib/api/clientApi');
+      return getCurrentUser();
+    },
+  });
 
   useEffect(() => {
     if (user) {
-      setIsLoadingData(false);
-    }
-  }, [user]);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const userData = await getCurrentUser();
-        setUser(userData);
-        setFormKey((prev) => prev + 1); // Reinitialize form when fetching fresh user data
-      } catch (error) {
-        console.error('Error fetching user:', error);
-        toast.error('Помилка завантаження даних користувача');
-      } finally {
-        setIsLoadingData(false);
-      }
-    };
-
-    if (!user) {
-      fetchUser();
+      setUser(user);
     }
   }, [user, setUser]);
 
@@ -99,7 +89,7 @@ export default function ProfileEditForm() {
     try {
       const updatedUser = await updateUser(updates);
       setUser(updatedUser);
-      setFormKey((prev) => prev + 1); // Reinitialize form with new saved values
+      queryClient.setQueryData([QUERY_KEYS.USER_PROFILE], updatedUser);
       toast.success('Дані успішно оновлено!');
     } catch (error) {
       console.error('Error updating user:', error);
@@ -109,11 +99,10 @@ export default function ProfileEditForm() {
 
   return (
     <Formik
-      key={formKey}
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
-      enableReinitialize={false}
+      enableReinitialize={true}
     >
       {({ isSubmitting, resetForm, values, setFieldValue }) => (
         <Form className={css.form}>
