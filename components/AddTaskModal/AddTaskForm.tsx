@@ -6,6 +6,7 @@ import styles from './AddTaskModal.module.css';
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import { createTask } from '@/lib/api/clientApi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import Button from '../Button/Button';
 
 interface AddTaskFormProps {
   onSuccess: () => void;
@@ -86,13 +87,13 @@ export default function AddTaskForm({ onSuccess }: AddTaskFormProps) {
             />
           </label>
 
-          <button
+          <Button
             type="submit"
             className={styles.submit}
             disabled={isSubmitting || createTaskMutation.isPending}
           >
             Зберегти
-          </button>
+          </Button>
         </Form>
       )}
     </Formik>

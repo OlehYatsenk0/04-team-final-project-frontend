@@ -20,25 +20,31 @@ const validationSchema = Yup.object().shape({
     })
     .test('fileType', 'Підтримуються тільки зображення', (value) => {
       if (!value) return true;
-      return ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'].includes(value.type);
+      return ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'].includes(
+        value.type,
+      );
     }),
   dueDate: Yup.string()
-    .required('Дата вагітності обов\'язкова')
+    .required("Планова дата пологів обов'язкова")
     .matches(/^\d{4}-\d{2}-\d{2}$/, 'Дата має бути у форматі YYYY-MM-DD')
-    .test('validDate', 'Дата має бути від 1 тижня до 40 тижнів від сьогодні', (value) => {
-      if (!value) return false;
-      const date = new Date(value);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      
-      const minDate = new Date(today);
-      minDate.setDate(today.getDate() + 7); // +1 week
-      
-      const maxDate = new Date(today);
-      maxDate.setDate(today.getDate() + 7 * 40); // +40 weeks
-      
-      return date >= minDate && date <= maxDate;
-    }),
+    .test(
+      'validDate',
+      'Дата має бути від 1 тижня до 40 тижнів від сьогодні',
+      (value) => {
+        if (!value) return false;
+        const date = new Date(value);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const minDate = new Date(today);
+        minDate.setDate(today.getDate() + 7); // +1 week
+
+        const maxDate = new Date(today);
+        maxDate.setDate(today.getDate() + 7 * 40); // +40 weeks
+
+        return date >= minDate && date <= maxDate;
+      },
+    ),
   gender: Yup.string()
     .oneOf(['male', 'female', 'neutral'], 'Оберіть стать дитини')
     .nullable(),
@@ -63,8 +69,8 @@ export default function OnboardingForm() {
   const mutation = useMutation({
     mutationFn: completeOnboarding,
     onSuccess: (user) => {
-      console.log("LOG USER", user);
-      
+      console.log('LOG USER', user);
+
       setUser(user);
       toast.success('Онбординг успішно завершено!');
       router.push('/');
@@ -84,137 +90,150 @@ export default function OnboardingForm() {
           <use href="/img/logo/sprite.svg#icon-stork"></use>
         </svg>
       </Link>
-    <div className={styles.container}>
-      
-      <h1 className={styles.title}>Давайте познаймимось ближче</h1>
+      <div className={styles.container}>
+        <h1 className={styles.title}>Давайте познаймимось ближче</h1>
 
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={async (values) => {
-          try {
-            await mutation.mutateAsync(values);
-          } catch (error) {
-            console.log(error);
-            
-            // Помилка обробляється в onError
-          }
-        }}
-      >
-        {({ setFieldValue, values, isSubmitting }) => (
-          <Form className={styles.form}>
-            {/* Аватар секція */}
-            <div className={styles.avatarSection}>
-              <div className={styles.avatarWrapper}>
-                {values.avatar ? (
-                  <Image
-                    src={URL.createObjectURL(values.avatar)}
-                    width={164}
-                    height={164}
-                    alt="Avatar preview"
-                    className={styles.avatarImage}
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={async (values) => {
+            try {
+              await mutation.mutateAsync(values);
+            } catch (error) {
+              console.log(error);
+
+              // Помилка обробляється в onError
+            }
+          }}
+        >
+          {({ setFieldValue, values, isSubmitting }) => (
+            <Form className={styles.form}>
+              {/* Аватар секція */}
+              <div className={styles.avatarSection}>
+                <div className={styles.avatarWrapper}>
+                  {values.avatar ? (
+                    <Image
+                      src={URL.createObjectURL(values.avatar)}
+                      width={164}
+                      height={164}
+                      alt="Avatar preview"
+                      className={styles.avatarImage}
+                    />
+                  ) : (
+                    <div className={styles.avatarPlaceholder}>
+                      <svg
+                        width="48"
+                        height="48"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className={styles.avatarIcon}
+                      >
+                        <path
+                          d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M20.59 22C20.59 18.13 16.74 15 12 15C7.26 15 3.41 18.13 3.41 22"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+                <label htmlFor="avatar" className={styles.uploadButton}>
+                  <input
+                    id="avatar"
+                    name="avatar"
+                    type="file"
+                    accept="image/*"
+                    onChange={(event) => {
+                      const file = event.currentTarget.files?.[0] || null;
+                      setFieldValue('avatar', file);
+                    }}
+                    className={styles.fileInput}
                   />
-                ) : (
-                  <div className={styles.avatarPlaceholder}>
-                    <svg
-                      width="48"
-                      height="48"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className={styles.avatarIcon}
-                    >
-                      <path
-                        d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M20.59 22C20.59 18.13 16.74 15 12 15C7.26 15 3.41 18.13 3.41 22"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div>
-                )}
-              </div>
-              <label htmlFor="avatar" className={styles.uploadButton}>
-                <input
-                  id="avatar"
+                  Завантажити фото
+                </label>
+                <ErrorMessage
                   name="avatar"
-                  type="file"
-                  accept="image/*"
-                  onChange={(event) => {
-                    const file = event.currentTarget.files?.[0] || null;
-                    setFieldValue('avatar', file);
-                  }}
-                  className={styles.fileInput}
+                  component="div"
+                  className={styles.error}
                 />
-                Завантажити фото
-              </label>
-              <ErrorMessage name="avatar" component="div" className={styles.error} />
-            </div>
-
-            {/* Поля форми */}
-            <div className={styles.fields}>
-              {/* Поле статі дитини */}
-              <div className={styles.field}>
-                <label htmlFor="gender" className={styles.label}>
-                  Стать дитини
-                </label>
-                <Field
-                  id="gender"
-                  name="gender"
-                  as="select"
-                  className={styles.select}
-                >
-                  {genderOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </Field>
-                <ErrorMessage name="gender" component="div" className={styles.error} />
               </div>
 
-              {/* Поле дати */}
-              <div className={styles.field}>
-                <label htmlFor="dueDate" className={styles.label}>
-                  Планова дата пологів
-                </label>
-                <Field
-                  id="dueDate"
-                  name="dueDate"
-                  type="date"
-                  className={styles.input}
-                />
-                <ErrorMessage name="dueDate" component="div" className={styles.error} />
-              </div>
-            </div>
+              {/* Поля форми */}
+              <div className={styles.fields}>
+                {/* Поле статі дитини */}
+                <div className={styles.field}>
+                  <label htmlFor="gender" className={styles.label}>
+                    Стать дитини
+                  </label>
+                  <Field
+                    id="gender"
+                    name="gender"
+                    as="select"
+                    className={styles.select}
+                  >
+                    {genderOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </Field>
+                  <ErrorMessage
+                    name="gender"
+                    component="div"
+                    className={styles.error}
+                  />
+                </div>
 
-            {/* Кнопка збереження */}
-            <button
-              type="submit"
-              disabled={isSubmitting || mutation.isPending}
-              className={styles.submitButton}
-            >
-              {isSubmitting || mutation.isPending ? 'Збереження...' : 'Зберегти'}
-            </button>
-          </Form>
-        )}
-      </Formik>
+                {/* Поле дати */}
+                <div className={styles.field}>
+                  <label htmlFor="dueDate" className={styles.label}>
+                    Планова дата пологів
+                  </label>
+                  <Field
+                    id="dueDate"
+                    name="dueDate"
+                    type="date"
+                    className={styles.input}
+                  />
+                  <ErrorMessage
+                    name="dueDate"
+                    component="div"
+                    className={styles.error}
+                  />
+                </div>
+              </div>
+
+              {/* Кнопка збереження */}
+              <button
+                type="submit"
+                disabled={isSubmitting || mutation.isPending}
+                className={styles.submitButton}
+              >
+                {isSubmitting || mutation.isPending
+                  ? 'Збереження...'
+                  : 'Зберегти'}
+              </button>
+            </Form>
+          )}
+        </Formik>
       </div>
-       <Image
+      <Image
         className={styles.img}
         src="/img/onbording.png"
-              alt="login"
-              width={720}
-              height={900}
-            />
-    </main >
+        alt="login"
+        width={720}
+        height={900}
+      />
+    </main>
   );
 }
