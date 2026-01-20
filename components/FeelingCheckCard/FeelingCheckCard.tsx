@@ -1,6 +1,16 @@
+import { useState } from 'react';
 import css from './FeelingCheckCard.module.css';
+import AddDiaryEntryForm from '../Diary/AddDiaryEntryModal/AddDiaryEntryForm';
+import Modal from '../Modal/Modal';
 
 function FeelingCheckCard() {
+  const [openModal, setOpenModal] = useState(false);
+
+  const openModalhandler = () => {
+    setOpenModal(true);
+    console.log('openModalhandler');
+  };
+
   return (
     <>
       <section className={css.feelingCheckCard}>
@@ -14,10 +24,17 @@ function FeelingCheckCard() {
         <button
           type="button"
           className={css.feelingCheckCard__button}
-          onClick={() => {}}
+          onClick={() => {
+            openModalhandler();
+          }}
         >
           Зробити запис у щоденник
         </button>
+        {openModal && (
+          <Modal handleClose={() => setOpenModal(false)}>
+            <AddDiaryEntryForm onSuccess={() => setOpenModal(false)} />
+          </Modal>
+        )}
       </section>
     </>
   );
