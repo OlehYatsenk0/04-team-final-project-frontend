@@ -1,14 +1,26 @@
+'use client';
+
 import { useState } from 'react';
 import css from './FeelingCheckCard.module.css';
 import AddDiaryEntryForm from '../Diary/AddDiaryEntryModal/AddDiaryEntryForm';
 import Modal from '../Modal/Modal';
 
+import { useAuthStore } from '@/lib/store/authStore';
+import { useRouter } from 'next/navigation';
+import Button from '../Button/Button';
+
 function FeelingCheckCard() {
   const [openModal, setOpenModal] = useState(false);
+  const router = useRouter();
+  const { user } = useAuthStore();
 
   const openModalhandler = () => {
+    if (!user) {
+      router.push('/sign-up');
+      return;
+    }
+
     setOpenModal(true);
-    console.log('openModalhandler');
   };
 
   return (
@@ -21,7 +33,7 @@ function FeelingCheckCard() {
         <p className={css.feelingCheckCard__labelNormal}>
           Занотуйте незвичні відчуття у тілі.
         </p>
-        <button
+        <Button
           type="button"
           className={css.feelingCheckCard__button}
           onClick={() => {
@@ -29,7 +41,7 @@ function FeelingCheckCard() {
           }}
         >
           Зробити запис у щоденник
-        </button>
+        </Button>
         {openModal && (
           <Modal handleClose={() => setOpenModal(false)}>
             <AddDiaryEntryForm onSuccess={() => setOpenModal(false)} />

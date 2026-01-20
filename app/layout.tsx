@@ -9,6 +9,10 @@ import '@/lib/validation/yup';
 import AuthProvider from '@/components/AuthProvider/AuthProvider';
 export const metadata: Metadata = {
   title: 'Leleka',
+  icons: {
+    icon: '/favicon.svg',
+  },
+
   description: 'Site for moms and dads about pregnancy',
 };
 
@@ -22,9 +26,9 @@ export default function RootLayout({
       <body className={`${lato.className} ${comfortaa.className}`}>
         <TanStackProvider>
           <AuthProvider>
-          <Sprite />
-          {children}
-          <Toaster  />
+            <Sprite />
+            {children}
+            <Toaster />
           </AuthProvider>
         </TanStackProvider>
       </body>

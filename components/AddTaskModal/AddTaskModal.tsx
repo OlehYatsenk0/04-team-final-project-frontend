@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import AddTaskForm from './AddTaskForm';
 import styles from './AddTaskModal.module.css';
+import Button from '../Button/Button';
 
 interface Props {
   onClose: () => void;
@@ -23,13 +24,13 @@ export default function AddTaskModal({ onClose }: Props) {
   return (
     <div className={styles.backdrop} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <button
+        <Button
           className={styles.close}
           onClick={onClose}
           aria-label="Close modal"
         >
           ×
-        </button>
+        </Button>
         <h2 className={styles.title}>Нове завдання</h2>
 
         <AddTaskForm onSuccess={onClose} />
